@@ -1,0 +1,21 @@
+@(employee: models.Employee, title: String)
+
+@templates.main(title) {
+<form action="@routes.EmployeeController.updateEmployee(employee.id)" method="POST">
+	<div>
+	<ul>
+	<li><label for="first-name">First Name</label><input type="text" name="first-name" value="@employee.firstName"></li>
+	<li><label for="last-name">Last Name</label><input type="text" name="last-name" value="@employee.lastName"></li>
+	<li>
+		@if(flash.get("error-email") != null) {
+			<span style="color: red" title="">*@flash.get("error-email")</span> 
+		}
+		<label for="email">Email</label><input type="text" name="email" value="@employee.email">
+	</li>
+	<label for="story-points">Default Velocity (in story points per sprint)</label><input type="text" name="story-points"  value="@employee.defaultStoryPointsPerSprint">
+	<li><label for="description">Description</label><textarea name="description">@employee.description</textarea></li>
+	<li><input type="submit"></li>
+	</ul>
+	</div>
+</form>
+}

@@ -20,6 +20,11 @@ GET     /addsprint                  controllers.SprintController.addSprint()
 POST	/addsprint					controllers.SprintController.addSprint()
 POST	/updatesprint				controllers.SprintController.updateSprint()
 
+#Employee controller
+GET		/employees					controllers.EmployeeController.employees()
+GET		/editEmployee/:employeeId	controllers.EmployeeController.editEmployee(employeeId: Long)
+POST	/updateEmployee/:employeeId	controllers.EmployeeController.updateEmployee(employeeId: Long)
+GET		/deleteEmployee/:employeeId	controllers.EmployeeController.deleteEmployee(employeeId: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

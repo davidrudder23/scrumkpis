@@ -1,0 +1,14 @@
+@(employees: List[models.Employee])
+
+@templates.main("Employees") {
+	<ul>
+	@for(employee <- employees) {
+		<li><a href="@routes.EmployeeController.deleteEmployee(employee.id)">X</a> 
+			<a href="@routes.EmployeeController.editEmployee(employee.id)">@employee.firstName @employee.lastName</a>
+		</li>
+	}
+	</ul>
+	
+	<a href="@routes.EmployeeController.editEmployee(0)">New Employee</a>
+	
+}
