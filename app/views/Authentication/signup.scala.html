@@ -1,0 +1,21 @@
+@()
+
+@templates.main("Signup") {
+	<form action="@routes.Authentication.doSignup()" method="POST">
+	<div>
+	<ul>
+	<li><label for="first-name">First Name</label><input type="text" name="first-name"></li>
+	<li><label for="last-name">Last Name</label><input type="text" name="last-name"></li>
+	<li>
+		@if(flash.get("error-email") != null) {
+			<span style="color: red" title="">*@flash.get("error-email")</span> 
+		}
+		<label for="email">Email</label><input type="text" name="email">
+	</li>
+	<li><label for="password">Password</label><input type="password" name="password"></li>
+	<li><input type="submit"></li>
+	</ul>
+	</div>
+	
+	</form>
+}

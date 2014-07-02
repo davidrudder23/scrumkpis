@@ -1,0 +1,21 @@
+@(sprints: List[models.Sprint])
+
+@templates.main("Sprints") {
+	<ul>
+	@for(sprint <- sprints) {
+		<li><a href="@routes.SprintController.deleteSprint(sprint.id)">X</a> 
+		<a href="@routes.SprintController.editSprint(sprint.id)">@sprint.name - @sprint.description</a></li>	
+	}
+	</ul>
+	
+	<div>New Sprint</div>
+	<div>
+		<form action="@routes.SprintController.addSprint()" method="POST">
+			<ul>
+			<li><label for="name">Name</label><input type="text" name="name"></li>
+			<li><label for="description">Description</label><textarea name="description" rows="3" cols="30"></textarea></li>
+			<input type="submit">
+			</ul>
+		</form>
+	</div>
+}

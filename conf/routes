@@ -1,0 +1,25 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index()
+
+# Authentication controller
+GET     /login						controllers.Authentication.login()
+POST	/authenticate				controllers.Authentication.authenticate()
+GET     /logout						controllers.Authentication.logout()
+GET 	/signup						controllers.Authentication.signup()
+POST 	/doSignup					controllers.Authentication.doSignup()
+
+# Sprint controller
+GET		/sprints					controllers.SprintController.sprints()
+GET		/deleteSprint/:sprintId		controllers.SprintController.deleteSprint(sprintId: Long)
+GET		/editSprint/:sprintId		controllers.SprintController.editSprint(sprintId: Long)
+GET     /addsprint                  controllers.SprintController.addSprint()
+POST	/addsprint					controllers.SprintController.addSprint()
+POST	/updatesprint				controllers.SprintController.updateSprint()
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
