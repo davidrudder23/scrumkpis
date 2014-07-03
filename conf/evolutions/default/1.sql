@@ -19,6 +19,7 @@ create table employee_sprint (
   employee_id               bigint,
   sprint_id                 bigint,
   story_points_available    integer,
+  story_points_completed    integer,
   constraint pk_employee_sprint primary key (id))
 ;
 

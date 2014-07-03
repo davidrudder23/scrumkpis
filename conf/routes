@@ -13,14 +13,17 @@ GET 	/signup						controllers.Authentication.signup()
 POST 	/doSignup					controllers.Authentication.doSignup()
 
 # Sprint controller
-GET		/sprints					controllers.SprintController.sprints()
-GET		/deleteSprint/:sprintId		controllers.SprintController.deleteSprint(sprintId: Long)
-GET		/editSprint/:sprintId		controllers.SprintController.editSprint(sprintId: Long)
-GET     /addsprint                  controllers.SprintController.addSprint()
-POST	/addsprint					controllers.SprintController.addSprint()
-POST	/updatesprint				controllers.SprintController.updateSprint()
+GET		/sprints								controllers.SprintController.sprints()
+GET		/deleteSprint/:sprintId					controllers.SprintController.deleteSprint(sprintId: Long)
+GET		/editSprint/:sprintId					controllers.SprintController.editSprint(sprintId: Long)
+POST	/editSprint/:sprintId					controllers.SprintController.editSprint(sprintId: Long)
+GET     /addsprint              				controllers.SprintController.addSprint()
+POST	/addsprint								controllers.SprintController.addSprint()
+POST	/updatesprint							controllers.SprintController.updateSprint()
+POST	/addEmployee 							controllers.SprintController.addEmployee
+GET		/removeEmployee/:sprintId/:employeeId	controllers.SprintController.removeEmployee(sprintId: Long, employeeId: Long)
 
-#Employee controller
+# Employee controller
 GET		/employees					controllers.EmployeeController.employees()
 GET		/editEmployee/:employeeId	controllers.EmployeeController.editEmployee(employeeId: Long)
 POST	/updateEmployee/:employeeId	controllers.EmployeeController.updateEmployee(employeeId: Long)

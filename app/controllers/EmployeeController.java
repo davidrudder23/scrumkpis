@@ -37,6 +37,7 @@ public class EmployeeController extends ParentController {
 			title = "New Employee";
 			employee = new Employee();
 			employee.id=new Long(0);
+			employee.defaultStoryPointsPerSprint = 15;
 		}
 		return ok(views.html.EmployeeController.editEmployee.render(employee, title));
 	}

@@ -1,14 +1,18 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import models.Employee;
+import models.EmployeeSprint;
 import models.ScrumMaster;
 import models.Sprint;
 import play.Logger;
 import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security.Authenticated;
+import scala.Array;
 import utils.AuthenticationUtil;
 import utils.StringUtils;
 
@@ -40,11 +44,20 @@ public class SprintController extends ParentController {
 	}
 	
 	public static Result deleteSprint(Long sprintId) {
-		Sprint.find.byId(sprintId).delete();
+		Sprint sprint = Sprint.find.byId(sprintId);
+		if (sprint != null) {
+			List<EmployeeSprint> employeeSprints = sprint.getEmployeeSprints();
+			for (EmployeeSprint employeeSprint: employeeSprints) {
+				employeeSprint.delete();
+			}
+			sprint.delete();
+		}
 		return redirect(controllers.routes.SprintController.sprints());
 	}
 	
 	public static Result editSprint(Long sprintId) {
+		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
+
 		Sprint sprint = Sprint.find.byId(sprintId);
 		String title = "Edit Sprint";
 		if (sprint == null) {
@@ -52,15 +65,51 @@ public class SprintController extends ParentController {
 			sprint = new Sprint();
 		}
 		
-		return ok(views.html.SprintController.editSprint.render(sprint, title));
+		List<Employee> employeesInList = sprint.getEmployees();
+		
+		List<Employee> employees = new ArrayList<Employee>();
+		List<Employee> tmpEmployees = Employee.find.where().eq("scrumMaster", scrumMaster).findList();
+		for (Employee employee: tmpEmployees) {
+			if (!employeesInList.contains(employee)) {
+				employees.add(employee);
+			}
+		}
+		
+		return ok(views.html.SprintController.editSprint.render(sprint, title, employees, scrumMaster));
 	}
 	
+	public static Result addEmployee() {
+		Long sprintId = StringUtils.getLong(getFormValue("sprint-id"));
+		Long employeeId = StringUtils.getLong(getFormValue("employee-id"));
+		
+		Sprint sprint = Sprint.find.byId(sprintId);
+		Employee employee = Employee.find.byId(employeeId);
+
+		sprint.addEmployee(employee);
+		return redirect(routes.SprintController.editSprint(sprintId));
+		
+	}
+	
+	public static Result removeEmployee(Long sprintId, Long employeeId) {
+		Sprint sprint = Sprint.find.byId(sprintId);
+		Employee employee = Employee.find.byId(employeeId);
+		if ((employee != null) && (sprint != null)) {
+			sprint.removeEmployee(employee);
+		}
+		
+		return redirect(routes.SprintController.editSprint(sprintId));
+	}
+
 	public static Result updateSprint() {
+		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
+
 		Long sprintId = StringUtils.getLong(getFormValue("sprintid"));
 		Sprint sprint = Sprint.find.byId(sprintId);
-		
+
+		boolean newSprint = false;
 		if (sprint == null) {
 			sprint = new Sprint();
+			newSprint = true;
 		}
 		
 		String name = getFormValue("name");
@@ -72,9 +121,36 @@ public class SprintController extends ParentController {
 			sprint.description = description;
 		}
 		
+		sprint.scrumMaster = scrumMaster;
+		sprint.active = true;
+		
 		sprint.save();
 		
-		return redirect(routes.SprintController.editSprint(sprintId));
+		if (newSprint) {
+			List<Employee> employees = Employee.find.where().eq("scrumMaster", scrumMaster).findList();
+			for (Employee employee: employees) {
+				sprint.addEmployee(employee);
+			}
+		}
+		
+		// Update the employee's story points
+		List<EmployeeSprint> employeeSprints = sprint.getEmployeeSprints();
+		for (EmployeeSprint employeeSprint: employeeSprints) {
+			int storyPointsAvailable = StringUtils.getInt(getFormValue("employeesprint-"+employeeSprint.id+"-storyPointsAvailable"), -1);
+			Logger.debug ("Setting storyPointsAvailable to "+storyPointsAvailable+" for employeeSprint id "+employeeSprint.id);
+			int storyPointsCompleted = StringUtils.getInt(getFormValue("employeesprint-"+employeeSprint.id+"-storyPointsCompleted"), -1);
+			
+			if (storyPointsAvailable >= 0) {
+				employeeSprint.storyPointsAvailable = storyPointsAvailable;
+			}
+			if (storyPointsCompleted >= 0) {
+				employeeSprint.storyPointsCompleted = storyPointsCompleted;
+			}
+			employeeSprint.save();
+		}
+		
+		return redirect(routes.SprintController.editSprint(sprint.id));
 	}
+
 
 }
