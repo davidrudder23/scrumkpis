@@ -2,6 +2,7 @@ package models;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -53,6 +54,11 @@ public class ScrumMaster extends Model {
 	public static String generateSalt() {
 		// TODO
 		return "SALT";
+	}
+	
+	public List<Sprint> getSprints() {
+		List<Sprint> sprints = Sprint.find.where().eq("scrumMaster", this).findList();
+		return sprints;
 	}
 
 	public static Finder<Long, ScrumMaster> find = new Finder<Long, ScrumMaster>(Long.class, ScrumMaster.class);

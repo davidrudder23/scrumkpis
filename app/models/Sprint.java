@@ -79,6 +79,24 @@ public class Sprint extends Model {
 		}
 	}
 	
+	public int getTotalStoryPointsPromised() {
+		int points = 0;
+		List<EmployeeSprint> employeeSprints = getEmployeeSprints();
+		for (EmployeeSprint employeeSprint: employeeSprints) {
+			points += employeeSprint.storyPointsAvailable;
+		}
+		return points;
+	}
+	
+	public int getTotalStoryPointsCompleted() {
+		int points = 0;
+		List<EmployeeSprint> employeeSprints = getEmployeeSprints();
+		for (EmployeeSprint employeeSprint: employeeSprints) {
+			points += employeeSprint.storyPointsCompleted;
+		}
+		return points;
+	}
+	
 	public static Finder<Long, Sprint> find = new Finder<Long, Sprint>(Long.class, Sprint.class);
 
 }
