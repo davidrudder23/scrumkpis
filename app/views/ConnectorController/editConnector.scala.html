@@ -4,7 +4,7 @@
 
 	<form action="@routes.ConnectorController.updateConnector(connector.getName())" method="POST">
 		@for(paramName <- connector.getParameterNames()) {
-		<div><label for="paramName-@paramName">@paramName</label><input type="text" name="paramName-@paramName" value="@connector.getValue(scrumMaster, paramName)"></div>
+		<div><label for="paramName-@paramName">@paramName</label><input type="@if(paramName=="password") {password} else {text}" name="paramName-@paramName" value="@connector.getValue(scrumMaster, paramName)"></div>
 		}
 		<div><input type="submit"></div>
 	</form>
