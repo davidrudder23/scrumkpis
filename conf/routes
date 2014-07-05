@@ -3,14 +3,14 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET     /                           			controllers.Application.index()
 
 # Authentication controller
-GET     /login						controllers.Authentication.login()
-POST	/authenticate				controllers.Authentication.authenticate()
-GET     /logout						controllers.Authentication.logout()
-GET 	/signup						controllers.Authentication.signup()
-POST 	/doSignup					controllers.Authentication.doSignup()
+GET     /login									controllers.Authentication.login()
+POST	/authenticate							controllers.Authentication.authenticate()
+GET     /logout									controllers.Authentication.logout()
+GET 	/signup									controllers.Authentication.signup()
+POST 	/doSignup								controllers.Authentication.doSignup()
 
 # Sprint controller
 GET		/sprints								controllers.SprintController.sprints()
@@ -24,13 +24,19 @@ POST	/addEmployee 							controllers.SprintController.addEmployee
 GET		/removeEmployee/:sprintId/:employeeId	controllers.SprintController.removeEmployee(sprintId: Long, employeeId: Long)
 
 # Employee controller
-GET		/employees					controllers.EmployeeController.employees()
-GET		/editEmployee/:employeeId	controllers.EmployeeController.editEmployee(employeeId: Long)
-POST	/updateEmployee/:employeeId	controllers.EmployeeController.updateEmployee(employeeId: Long)
-GET		/deleteEmployee/:employeeId	controllers.EmployeeController.deleteEmployee(employeeId: Long)
+GET		/employees								controllers.EmployeeController.employees()
+GET		/editEmployee/:employeeId				controllers.EmployeeController.editEmployee(employeeId: Long)
+POST	/updateEmployee/:employeeId				controllers.EmployeeController.updateEmployee(employeeId: Long)
+GET		/deleteEmployee/:employeeId				controllers.EmployeeController.deleteEmployee(employeeId: Long)
 
 # Reports
-GET		/velocity					controllers.ReportController.velocityChart()
+GET		/velocity								controllers.ReportController.velocityChart()
+
+# Connectors
+GET		/connectors								controllers.ConnectorController.listConnectors()
+GET		/connector/:connectorName				controllers.ConnectorController.editConnector(connectorName: String)
+POST	/connector/:connectorName				controllers.ConnectorController.updateConnector(connectorName: String)
+GET	/connector/:connectorName/run			controllers.ConnectorController.runConnector(connectorName: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

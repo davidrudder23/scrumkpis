@@ -43,5 +43,12 @@ public class ConnectorController extends ParentController {
 		
 		return redirect(controllers.routes.ConnectorController.editConnector(connectorName));
 	}
+	
+	public static Result runConnector(String connectorName) {
+		Connector connector = Connector.getConnector(connectorName);
+		connector.run();
+		return redirect(controllers.routes.ConnectorController.editConnector(connectorName));
+
+	}
 
 }

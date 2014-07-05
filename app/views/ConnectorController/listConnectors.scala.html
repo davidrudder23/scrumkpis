@@ -3,7 +3,8 @@
 @templates.main("Connectors") {
 	<ul>
 	@for(connector <- allConnectors) {
-		<li><a href="@routes.ConnectorController.editConnector(connector.getName())">@connector.getName() Connector</a></li>
+		<li><a href="@routes.ConnectorController.editConnector(connector.getName())">@connector.getName() Connector</a>
+		<a href="@routes.ConnectorController.runConnector(connector.getName())">Run!</a></li>
 	}
 	</ul>
 }

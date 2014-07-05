@@ -3,6 +3,21 @@
 
 # --- !Ups
 
+create table connector_configuration (
+  id                        bigint auto_increment not null,
+  connector_name            varchar(255),
+  name                      varchar(255),
+  value                     varchar(255),
+  constraint pk_connector_configuration primary key (id))
+;
+
+create table connector_data (
+  id                        bigint auto_increment not null,
+  name                      varchar(255),
+  value                     varchar(255),
+  constraint pk_connector_data primary key (id))
+;
+
 create table employee (
   id                        bigint auto_increment not null,
   scrum_master_id           bigint,
@@ -20,6 +35,7 @@ create table employee_sprint (
   sprint_id                 bigint,
   story_points_available    integer,
   story_points_completed    integer,
+  num_reopens               integer,
   constraint pk_employee_sprint primary key (id))
 ;
 
@@ -38,7 +54,7 @@ create table sprint (
   name                      varchar(255),
   description               varchar(2048),
   start_date                datetime,
-  active                    tinyint(1) default 0,
+  locked                    tinyint(1) default 0,
   scrum_master_id           bigint,
   constraint pk_sprint primary key (id))
 ;
@@ -57,6 +73,10 @@ create index ix_sprint_scrumMaster_4 on sprint (scrum_master_id);
 # --- !Downs
 
 SET FOREIGN_KEY_CHECKS=0;
+
+drop table connector_configuration;
+
+drop table connector_data;
 
 drop table employee;
 

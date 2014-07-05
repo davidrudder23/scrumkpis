@@ -1,3 +1,9 @@
+#navcontainer
+{
+background-image: url("https://www.ikeepm.com/images/headerbg1.png");
+}
+
+
 #navcontainer ul
 {
 margin: 0;
@@ -20,4 +26,19 @@ background-color: #036;
 {
 color: #fff;
 background-color: #369;
+}
+
+.content 
+{
+	margin-top: 10px;
+	display: block;
+	float: center;
+	position: relative;
+	margin: auto;
+	width: 60%;
+}
+
+.paragraph {
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
