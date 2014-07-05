@@ -22,7 +22,7 @@ public class SprintController extends ParentController {
 
 	public static Result sprints() {
 		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
-		List<Sprint> activeSprints = Sprint.find.where().eq("active", Boolean.TRUE).eq("scrumMaster", scrumMaster).findList();
+		List<Sprint> activeSprints = Sprint.find.where().eq("scrumMaster", scrumMaster).findList();
 		return ok(views.html.SprintController.sprints.render(activeSprints));
 	}
 	public static Result addSprint() {

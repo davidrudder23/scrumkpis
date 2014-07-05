@@ -8,6 +8,7 @@ import java.util.List;
 import com.avaje.ebean.Ebean;
 
 import models.ConnectorConfiguration;
+import models.ScrumMaster;
 import play.Logger;
 import play.db.ebean.EbeanPlugin;
 import utils.StringUtils;
@@ -16,7 +17,7 @@ public abstract class Connector {
 	
 	public abstract String getName();
 	
-	public abstract void run();
+	public abstract void run(ScrumMaster scrumMaster);
 	
 	public abstract List<String> getParameterNames();
 	
@@ -41,11 +42,11 @@ public abstract class Connector {
 		return null;
 	}
 	
-	public String getValue(String name) {
-		return ConnectorConfiguration.getValue(getName(), name);
+	public String getValue(ScrumMaster scrumMaster, String name) {
+		return ConnectorConfiguration.getValue(scrumMaster, getName(), name);
 	}
 	
-	public void setValue (String name, String value) {
-		ConnectorConfiguration.setValue(getName(), name, value);
+	public void setValue (ScrumMaster scrumMaster, String name, String value) {
+		ConnectorConfiguration.setValue(scrumMaster, getName(), name, value);
 	}
 }

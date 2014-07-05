@@ -3,9 +3,11 @@ package connectors;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.ScrumMaster;
+
 public class GitConnector extends Connector {
 
-	public void run() {
+	public void run(ScrumMaster scrumMaster) {
 		
 	}
 	

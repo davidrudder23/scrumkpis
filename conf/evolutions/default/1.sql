@@ -8,6 +8,7 @@ create table connector_configuration (
   connector_name            varchar(255),
   name                      varchar(255),
   value                     varchar(255),
+  scrum_master_id           bigint,
   constraint pk_connector_configuration primary key (id))
 ;
 
@@ -59,14 +60,16 @@ create table sprint (
   constraint pk_sprint primary key (id))
 ;
 
-alter table employee add constraint fk_employee_scrumMaster_1 foreign key (scrum_master_id) references scrum_master (id) on delete restrict on update restrict;
-create index ix_employee_scrumMaster_1 on employee (scrum_master_id);
-alter table employee_sprint add constraint fk_employee_sprint_employee_2 foreign key (employee_id) references employee (id) on delete restrict on update restrict;
-create index ix_employee_sprint_employee_2 on employee_sprint (employee_id);
-alter table employee_sprint add constraint fk_employee_sprint_sprint_3 foreign key (sprint_id) references sprint (id) on delete restrict on update restrict;
-create index ix_employee_sprint_sprint_3 on employee_sprint (sprint_id);
-alter table sprint add constraint fk_sprint_scrumMaster_4 foreign key (scrum_master_id) references scrum_master (id) on delete restrict on update restrict;
-create index ix_sprint_scrumMaster_4 on sprint (scrum_master_id);
+alter table connector_configuration add constraint fk_connector_configuration_scrumMaster_1 foreign key (scrum_master_id) references scrum_master (id) on delete restrict on update restrict;
+create index ix_connector_configuration_scrumMaster_1 on connector_configuration (scrum_master_id);
+alter table employee add constraint fk_employee_scrumMaster_2 foreign key (scrum_master_id) references scrum_master (id) on delete restrict on update restrict;
+create index ix_employee_scrumMaster_2 on employee (scrum_master_id);
+alter table employee_sprint add constraint fk_employee_sprint_employee_3 foreign key (employee_id) references employee (id) on delete restrict on update restrict;
+create index ix_employee_sprint_employee_3 on employee_sprint (employee_id);
+alter table employee_sprint add constraint fk_employee_sprint_sprint_4 foreign key (sprint_id) references sprint (id) on delete restrict on update restrict;
+create index ix_employee_sprint_sprint_4 on employee_sprint (sprint_id);
+alter table sprint add constraint fk_sprint_scrumMaster_5 foreign key (scrum_master_id) references scrum_master (id) on delete restrict on update restrict;
+create index ix_sprint_scrumMaster_5 on sprint (scrum_master_id);
 
 
 
