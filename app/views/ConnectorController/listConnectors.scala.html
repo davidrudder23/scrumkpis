@@ -1,0 +1,9 @@
+@(allConnectors: List[connectors.Connector])
+
+@templates.main("Connectors") {
+	<ul>
+	@for(connector <- allConnectors) {
+		<li><a href="@routes.ConnectorController.editConnector(connector.getName())">@connector.getName() Connector</a></li>
+	}
+	</ul>
+}

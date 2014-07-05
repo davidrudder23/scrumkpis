@@ -18,12 +18,15 @@
     <li><a href="@routes.SprintController.sprints()">Sprints</a></li>
     <li><a href="@routes.EmployeeController.employees()">Employees</a></li>
     <li>-</li>
-    <li><a href="@routes.ReportController.velocityChart()">Velocity</a></li>
+    <li><a href="@routes.ConnectorController.listConnectors()">Connectors</a></li>
     <li>-</li>
     <li><a href="@routes.Authentication.logout()">Logout</a></li>
     </ul>
     <hr/>
     </div>
+    
+    <div id="content" class="content">
         @content
+    </div>
     </body>
 </html>

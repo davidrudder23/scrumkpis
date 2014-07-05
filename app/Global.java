@@ -21,7 +21,7 @@ public class Global extends GlobalSettings {
         int numSprints = Sprint.find.findRowCount();
         if (numSprints<=0) {
         	Sprint sprint = new Sprint();
-        	sprint.active = true;
+        	sprint.locked = true;
         	sprint.name = "0.1";
         	sprint.description = "Auto-generated template";
         	sprint.scrumMaster = scrumMaster;

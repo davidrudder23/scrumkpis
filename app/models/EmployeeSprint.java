@@ -27,5 +27,7 @@ public class EmployeeSprint extends Model {
 	
 	public int storyPointsCompleted;
 	
+	public int numReopens;
+	
 	public static Finder<Long, EmployeeSprint> find = new Finder<Long, EmployeeSprint>(Long.class, EmployeeSprint.class);
 }

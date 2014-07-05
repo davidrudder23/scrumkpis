@@ -1,0 +1,11 @@
+@(connector: connectors.Connector)
+
+@templates.main("Edit "+connector.getName()+" Connector") {
+
+	<form action="@routes.ConnectorController.updateConnector(connector.getName())" method="POST">
+		@for(paramName <- connector.getParameterNames()) {
+		<div><label for="paramName-@paramName">@paramName</label><input type="text" name="paramName-@paramName" value="@connector.getValue(paramName)"></div>
+		}
+		<div><input type="submit"></div>
+	</form>
+}

@@ -30,7 +30,7 @@ public class Sprint extends Model {
 
 	public Date startDate;
 
-	public Boolean active = false;
+	public Boolean locked = false;
 
 	public List<Employee> employees;
 	

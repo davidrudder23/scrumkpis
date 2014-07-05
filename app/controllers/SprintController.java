@@ -36,7 +36,7 @@ public class SprintController extends ParentController {
 		}
 		Logger.debug("Got sprint " + sprint.name);
 
-		sprint.active = Boolean.TRUE;
+		sprint.locked = false;
 		sprint.startDate = new Date();
 		sprint.scrumMaster = scrumMaster;
 		sprint.save();
@@ -122,7 +122,7 @@ public class SprintController extends ParentController {
 		}
 		
 		sprint.scrumMaster = scrumMaster;
-		sprint.active = true;
+		sprint.locked = false;
 		
 		sprint.save();
 		
@@ -139,12 +139,17 @@ public class SprintController extends ParentController {
 			int storyPointsAvailable = StringUtils.getInt(getFormValue("employeesprint-"+employeeSprint.id+"-storyPointsAvailable"), -1);
 			Logger.debug ("Setting storyPointsAvailable to "+storyPointsAvailable+" for employeeSprint id "+employeeSprint.id);
 			int storyPointsCompleted = StringUtils.getInt(getFormValue("employeesprint-"+employeeSprint.id+"-storyPointsCompleted"), -1);
+			int numReopens = StringUtils.getInt(getFormValue("employeesprint-"+employeeSprint.id+"-numReopens"), -1);
 			
 			if (storyPointsAvailable >= 0) {
 				employeeSprint.storyPointsAvailable = storyPointsAvailable;
 			}
 			if (storyPointsCompleted >= 0) {
 				employeeSprint.storyPointsCompleted = storyPointsCompleted;
+			}
+
+			if (numReopens >= 0) {
+				employeeSprint.numReopens = numReopens;
 			}
 			employeeSprint.save();
 		}
