@@ -35,8 +35,8 @@ create table employee_sprint (
   id                        bigint auto_increment not null,
   employee_id               bigint,
   sprint_id                 bigint,
-  story_points_available    integer,
-  story_points_completed    integer,
+  story_points_available    float,
+  story_points_completed    float,
   num_reopens               integer,
   constraint pk_employee_sprint primary key (id))
 ;

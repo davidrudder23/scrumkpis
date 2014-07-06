@@ -68,11 +68,7 @@ public class EmployeeController extends ParentController {
 		employee.jiraID = getFormValue("jira-id");
 		Logger.debug ("jiraid="+employee.jiraID);
 		
-		if (isNew) {
-			employee.save();
-		} else {
-			Ebean.update(employee, new HashSet<String>(Arrays.asList("firstName", "lastName", "email", "defaultStoryPointsPerSprint", "description", "jiraID")));
-		}
+		employee.save();
 		
 		return redirect(controllers.routes.EmployeeController.employees());
 	}

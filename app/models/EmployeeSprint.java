@@ -27,9 +27,9 @@ public class EmployeeSprint extends Model {
 	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	public Sprint sprint;
 	
-	public int storyPointsAvailable;
+	public float storyPointsAvailable;
 	
-	public int storyPointsCompleted;
+	public float storyPointsCompleted;
 	
 	public int numReopens;
 	

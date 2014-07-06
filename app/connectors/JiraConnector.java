@@ -9,16 +9,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import com.avaje.ebean.Ebean;
-
 import net.rcarz.jiraclient.BasicCredentials;
 import net.rcarz.jiraclient.Issue;
 import net.rcarz.jiraclient.Issue.SearchResult;
-import net.rcarz.jiraclient.ICredentials;
-import net.rcarz.jiraclient.IssueLink;
 import net.rcarz.jiraclient.JiraClient;
 import net.rcarz.jiraclient.JiraException;
-import net.rcarz.jiraclient.WorkLog;
+
+import com.avaje.ebean.Ebean;
+
 import play.Logger;
 import utils.StringUtils;
 import models.ConnectorConfiguration;
@@ -78,11 +76,11 @@ public class JiraConnector extends Connector {
 				List<Issue> issues = searchResult.issues;
 				Logger.debug ("Got "+issues.size()+" issues with query \""+query+"\"");
 				
-				HashMap<String, Integer> storyPointsPerResolver = new HashMap<String, Integer>();
+				HashMap<String, Float> storyPointsPerResolver = new HashMap<String, Float>();
 				for (Issue issue: issues) {
-					int storyPoints = StringUtils.getInt(issue.getField("customfield_"+storyPointsCustomFieldID).toString(), 0);
+					float storyPoints = StringUtils.getFloat(issue.getField("customfield_"+storyPointsCustomFieldID).toString(), (float)0);
 					String resolver = issue.getField("customfield_"+resolverCustomFieldID).toString();
-					Logger.debug ("Story points for issue "+issue.getKey()+"="+storyPoints);
+					Logger.debug ("Story points for issue "+issue.getKey()+"="+storyPoints + " val="+issue.getField("customfield_"+storyPointsCustomFieldID));
 					Logger.debug ("Resolver for issue "+issue.getKey()+"="+resolver);
 					
 					if (storyPoints<=0) {
@@ -91,11 +89,11 @@ public class JiraConnector extends Connector {
 					if (StringUtils.isEmpty(resolver)) {
 						continue;
 					}
-					Integer alreadyCountedStoryPoints = storyPointsPerResolver.get(resolver);
+					Float alreadyCountedStoryPoints = storyPointsPerResolver.get(resolver);
 					if (alreadyCountedStoryPoints == null) {
-						alreadyCountedStoryPoints = new Integer(0);
+						alreadyCountedStoryPoints = new Float(0);
 					}
-					alreadyCountedStoryPoints = new Integer(alreadyCountedStoryPoints.intValue()+storyPoints);
+					alreadyCountedStoryPoints = new Float(alreadyCountedStoryPoints.floatValue()+storyPoints);
 					storyPointsPerResolver.put(resolver, alreadyCountedStoryPoints);
 				}
 			
@@ -113,11 +111,11 @@ public class JiraConnector extends Connector {
 						continue;
 					}
 					
-					Integer points = storyPointsPerResolver.get(employee.jiraID);
+					Float points = storyPointsPerResolver.get(employee.jiraID);
 					Logger.debug ("Assigning "+points+" to "+employee.jiraID);
 					if (points != null) {
-						employeeSprint.storyPointsCompleted = points.intValue();
-						Ebean.update(employeeSprint, new HashSet<String>(Arrays.asList("storyPointsCompleted")));
+						employeeSprint.storyPointsCompleted = points.floatValue();
+						employeeSprint.save();
 					}
 					
 				}
