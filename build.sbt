@@ -19,3 +19,7 @@ libraryDependencies ++= Seq(
 )
 
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.18"
+
+val appDependencies = Seq(
+  "org.hibernate" % "hibernate-entitymanager" % "3.6.9.Final"
+)

@@ -1,7 +1,12 @@
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
+
 import models.ScrumMaster;
 import models.Sprint;
 import play.Application;
 import play.GlobalSettings;
+import play.Logger;
 
 
 public class Global extends GlobalSettings {
@@ -21,11 +26,18 @@ public class Global extends GlobalSettings {
         int numSprints = Sprint.find.findRowCount();
         if (numSprints<=0) {
         	Sprint sprint = new Sprint();
-        	sprint.locked = true;
+        	sprint.locked = false;
         	sprint.name = "0.1";
         	sprint.description = "Auto-generated template";
         	sprint.scrumMaster = scrumMaster;
-        	sprint.save();
+           	Date startDate;
+			try {
+				startDate = DateFormat.getDateInstance().parse("06/16/2014");
+	           	sprint.startDate = startDate;
+			} catch (ParseException e) {
+				Logger.warn("Can't create a start date", e);
+			}
+            sprint.save();
         }
         
     }

@@ -1,5 +1,7 @@
 package controllers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,10 +48,10 @@ public class SprintController extends ParentController {
 	public static Result deleteSprint(Long sprintId) {
 		Sprint sprint = Sprint.find.byId(sprintId);
 		if (sprint != null) {
-			List<EmployeeSprint> employeeSprints = sprint.getEmployeeSprints();
+			/*List<EmployeeSprint> employeeSprints = sprint.getEmployeeSprints();
 			for (EmployeeSprint employeeSprint: employeeSprints) {
 				employeeSprint.delete();
-			}
+			}*/
 			sprint.delete();
 		}
 		return redirect(controllers.routes.SprintController.sprints());
@@ -120,7 +122,11 @@ public class SprintController extends ParentController {
 		if (!StringUtils.isEmpty(description)) {
 			sprint.description = description;
 		}
-		
+		try {
+			sprint.startDate = DateFormat.getDateInstance().parse(getFormValue("start-date"));
+		} catch (ParseException e) {
+			Logger.debug("Can't parse date", e);
+		}
 		sprint.scrumMaster = scrumMaster;
 		sprint.locked = false;
 		

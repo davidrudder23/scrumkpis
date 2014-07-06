@@ -1,9 +1,12 @@
 package controllers;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
-import utils.StringUtils;
+import com.avaje.ebean.Ebean;
 
+import utils.StringUtils;
 import play.Logger;
 import play.mvc.Result;
 import play.mvc.Security.Authenticated;
@@ -45,9 +48,11 @@ public class EmployeeController extends ParentController {
 	public static Result updateEmployee(Long id) {
 		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
 		Employee employee = Employee.find.byId(id);
+		boolean isNew = false;
 		if (employee == null) {
 			employee = new Employee();
 			employee.scrumMaster = scrumMaster;
+			isNew = true;
 		} else {
 			if (!employee.scrumMaster.equals(scrumMaster)) {
 				flash().put("error", "You do not manage this employee");
@@ -60,7 +65,14 @@ public class EmployeeController extends ParentController {
 		employee.email = getFormValue("email");
 		employee.defaultStoryPointsPerSprint = StringUtils.getInt(getFormValue("story-points"), 15);
 		employee.description = getFormValue("description");
-		employee.save();
+		employee.jiraID = getFormValue("jira-id");
+		Logger.debug ("jiraid="+employee.jiraID);
+		
+		if (isNew) {
+			employee.save();
+		} else {
+			Ebean.update(employee, new HashSet<String>(Arrays.asList("firstName", "lastName", "email", "defaultStoryPointsPerSprint", "description", "jiraID")));
+		}
 		
 		return redirect(controllers.routes.EmployeeController.employees());
 	}

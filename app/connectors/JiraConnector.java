@@ -3,9 +3,13 @@ package connectors;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+
+import com.avaje.ebean.Ebean;
 
 import net.rcarz.jiraclient.BasicCredentials;
 import net.rcarz.jiraclient.Issue;
@@ -18,6 +22,7 @@ import net.rcarz.jiraclient.WorkLog;
 import play.Logger;
 import utils.StringUtils;
 import models.ConnectorConfiguration;
+import models.Employee;
 import models.EmployeeSprint;
 import models.ScrumMaster;
 import models.Sprint;
@@ -95,8 +100,30 @@ public class JiraConnector extends Connector {
 				}
 			
 				List<EmployeeSprint> employeeSprints = sprint.getEmployeeSprints();
+				Logger.debug (employeeSprints.size()+" employee sprints");
+				for (EmployeeSprint employeeSprint: employeeSprints) {
+					Sprint tmp = employeeSprint.sprint;
+					Logger.debug ("Sprint: "+tmp.name);
+
+					Logger.debug ("Employee: "+employeeSprint.employee.id);
+					Logger.debug ("Employee first name: "+employeeSprint.employee.firstName);
+					Logger.debug ("Employee jira IS: "+employeeSprint.employee.jiraID);
+					Employee employee = employeeSprint.employee;
+					if (StringUtils.isEmpty(employee.jiraID)) {
+						continue;
+					}
+					
+					Integer points = storyPointsPerResolver.get(employee.jiraID);
+					Logger.debug ("Assigning "+points+" to "+employee.jiraID);
+					if (points != null) {
+						employeeSprint.storyPointsCompleted = points.intValue();
+						Ebean.update(employeeSprint, new HashSet<String>(Arrays.asList("storyPointsCompleted")));
+					}
+					
+				}
 			}
 		} catch (JiraException e) {
+			e.printStackTrace();
 			Logger.warn("Could not access jira at url "+jiraURL, e);
 		}		
 	}

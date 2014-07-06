@@ -25,6 +25,7 @@ create table employee (
   first_name                varchar(255),
   last_name                 varchar(255),
   email                     varchar(255),
+  jira_id                   varchar(255),
   description               varchar(255),
   default_story_points_per_sprint integer,
   constraint pk_employee primary key (id))

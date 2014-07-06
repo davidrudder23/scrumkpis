@@ -1,8 +1,12 @@
 package models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.Fetch;
 
 import play.db.ebean.Model;
 
@@ -17,10 +21,10 @@ public class EmployeeSprint extends Model {
 	@Id
 	public Long id;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	public Employee employee;
-
-	@ManyToOne
+	
+	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	public Sprint sprint;
 	
 	public int storyPointsAvailable;
