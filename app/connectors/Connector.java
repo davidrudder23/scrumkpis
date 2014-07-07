@@ -17,7 +17,7 @@ public abstract class Connector {
 	
 	public abstract String getName();
 	
-	public abstract void run(ScrumMaster scrumMaster);
+	public abstract void run(ScrumMaster scrumMaster) throws ConnectorException;
 	
 	public abstract List<String> getParameterNames();
 	

@@ -4,6 +4,7 @@ import java.util.List;
 
 import models.ScrumMaster;
 import connectors.Connector;
+import connectors.ConnectorException;
 import play.Logger;
 import play.mvc.Result;
 import play.mvc.Security.Authenticated;
@@ -53,7 +54,12 @@ public class ConnectorController extends ParentController {
 	public static Result runConnector(String connectorName) {
 		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
 		Connector connector = Connector.getConnector(connectorName);
-		connector.run(scrumMaster);
+		try {
+			connector.run(scrumMaster);
+		} catch (ConnectorException e) {
+			flash().put("error", e.getMessage());
+			return redirect(controllers.routes.ConnectorController.editConnector(connectorName));
+		}
 		return redirect(controllers.routes.SprintController.sprints());
 
 	}

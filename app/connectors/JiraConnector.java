@@ -28,7 +28,7 @@ import models.Sprint;
 public class JiraConnector extends Connector {
 
 	@Override
-	public void run(ScrumMaster scrumMaster) {
+	public void run(ScrumMaster scrumMaster) throws ConnectorException {
 		String jiraURL = ConnectorConfiguration.getValue(scrumMaster, getName(), "jiraURL");
 		String username = ConnectorConfiguration.getValue(scrumMaster, getName(), "username");
 		String password = ConnectorConfiguration.getValue(scrumMaster, getName(), "password");
@@ -42,8 +42,7 @@ public class JiraConnector extends Connector {
 				(StringUtils.isEmpty(username)) ||
 				(StringUtils.isEmpty(password)) ||
 				(StringUtils.isEmpty(query))) {
-			Logger.error("Jira configuration is not complete");
-			return;
+			throw new ConnectorException("Jira configuration is not complete");
 		}
 		
 		if (StringUtils.isEmpty(storyPointsCustomFieldID)) {
