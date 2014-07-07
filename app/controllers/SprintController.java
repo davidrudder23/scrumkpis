@@ -2,7 +2,10 @@ package controllers;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +28,33 @@ public class SprintController extends ParentController {
 	public static Result sprints() {
 		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
 		List<Sprint> activeSprints = Sprint.find.where().eq("scrumMaster", scrumMaster).findList();
+		Collections.sort(activeSprints, new Comparator<Sprint>() {
+
+			@Override
+			public int compare(Sprint sprintA, Sprint sprintB) {
+				if ((sprintA==null) && (sprintB==null)) {
+					return 0;
+				}
+				if (sprintA==null) {
+					return 1;
+				}
+				if (sprintB==null) {
+					return -1;
+				}
+				
+				if ((sprintA.name==null) && (sprintB.name==null)) {
+					return 0;
+				}
+				if (sprintA.name==null) {
+					return 1;
+				}
+				if (sprintB.name==null) {
+					return -1;
+				}
+				return sprintA.name.compareTo(sprintB.name);
+			}
+			
+		});
 		return ok(views.html.SprintController.sprints.render(activeSprints));
 	}
 	public static Result addSprint() {
@@ -123,7 +153,8 @@ public class SprintController extends ParentController {
 			sprint.description = description;
 		}
 		try {
-			sprint.startDate = DateFormat.getDateInstance().parse(getFormValue("start-date"));
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			sprint.startDate = sdf.parse(getFormValue("start-date"));
 		} catch (ParseException e) {
 			Logger.debug("Can't parse date", e);
 		}

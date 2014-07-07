@@ -8,8 +8,10 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 		<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script src="//code.jquery.com/ui/1.11.0/jquery-ui.min.js"></script>
         <link rel="stylesheet" media="screen" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
         @scripts
     </head>
     <body>
@@ -30,4 +32,10 @@
         @content
     </div>
     </body>
+    
+	<script>
+		$(function() {
+			$( ".datepicker" ).datepicker();
+		});
+	</script>
 </html>

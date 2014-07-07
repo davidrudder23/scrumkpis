@@ -4,7 +4,7 @@
 	<ul>
 	@for(employee <- employees) {
 		<li><a href="@routes.EmployeeController.deleteEmployee(employee.id)">X</a> 
-			<a href="@routes.EmployeeController.editEmployee(employee.id)">@employee.firstName @employee.lastName</a>
+			<a href="@routes.EmployeeController.editEmployee(employee.id)">@employee.lastName, @employee.firstName</a>
 		</li>
 	}
 	</ul>

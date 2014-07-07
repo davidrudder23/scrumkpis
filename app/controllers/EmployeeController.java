@@ -1,6 +1,8 @@
 package controllers;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import play.mvc.Security.Authenticated;
 import utils.AuthenticationUtil;
 import models.Employee;
 import models.ScrumMaster;
+import models.Sprint;
 
 @Authenticated(AuthenticationUtil.class)
 public class EmployeeController extends ParentController {
@@ -22,7 +25,33 @@ public class EmployeeController extends ParentController {
 		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
 		Logger.debug ("ScrumMaster="+scrumMaster);
 		List<Employee> employees = Employee.find.where().eq("scrumMaster", scrumMaster).findList();
-		
+		Collections.sort(employees, new Comparator<Employee>() {
+
+			@Override
+			public int compare(Employee employeeA, Employee employeeB) {
+				if ((employeeA==null) && (employeeB==null)) {
+					return 0;
+				}
+				if (employeeA==null) {
+					return 1;
+				}
+				if (employeeB==null) {
+					return -1;
+				}
+				
+				if ((employeeA.lastName==null) && (employeeB.lastName==null)) {
+					return 0;
+				}
+				if (employeeA.lastName==null) {
+					return 1;
+				}
+				if (employeeB.lastName==null) {
+					return -1;
+				}
+				return employeeA.lastName.compareTo(employeeB.lastName);
+			}
+			
+		});
 		return ok(views.html.EmployeeController.employees.render(employees));
 	}
 	

@@ -28,11 +28,9 @@ public class Sprint extends Model {
 	@Column(length = 2048)
 	public String description;
 
-	public Date startDate;
+	public Date startDate = new Date();
 
 	public Boolean locked = false;
-
-	public List<Employee> employees;
 	
 	@ManyToOne
 	public ScrumMaster scrumMaster;

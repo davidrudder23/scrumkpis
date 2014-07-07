@@ -6,7 +6,7 @@
 	<ul>
 	<li><label>Name</label><input type="text" name="name" value="@sprint.name"></li>
 	<li><label>Description</label><textarea name="description">@sprint.description</textarea></li>
-	<li><label>Start Date</label><input type="text" name="start-date" value="@sprint.startDate"</li>
+	<li><label>Start Date</label><input type="text" name="start-date" value="@sprint.startDate.format("MM/dd/yyyy")" class="datepicker"></li>
 	</ul>
 	
 	@if(sprint.id!=null) {

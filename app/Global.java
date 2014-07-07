@@ -1,5 +1,6 @@
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import models.ScrumMaster;
@@ -32,7 +33,7 @@ public class Global extends GlobalSettings {
         	sprint.scrumMaster = scrumMaster;
            	Date startDate;
 			try {
-				startDate = DateFormat.getDateInstance().parse("06/16/2014");
+				startDate = new SimpleDateFormat("MM/dd/yyyy").parse("06/24/2014");
 	           	sprint.startDate = startDate;
 			} catch (ParseException e) {
 				Logger.warn("Can't create a start date", e);
