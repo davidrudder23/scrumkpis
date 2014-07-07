@@ -38,5 +38,9 @@
 		$(function() {
 			$( ".datepicker" ).datepicker();
 		});
+		
+		@if(flash.get("error")) {
+			alert(@flash.get("error"));
+		}
 	</script>
 </html>

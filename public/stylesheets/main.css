@@ -42,3 +42,9 @@ background-color: #369;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
+
+.data-card {
+	border: 2px solid;
+    border-radius: 25px;
+    font-size: 15px;
+}

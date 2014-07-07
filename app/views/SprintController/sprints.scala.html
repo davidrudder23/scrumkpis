@@ -3,14 +3,14 @@
 @templates.main("Sprints") {
 	<ul>
 	@for(sprint <- sprints) {
-		<li><a href="@routes.SprintController.deleteSprint(sprint.id)">X</a> 
+		<li><a href="@routes.SprintController.deleteSprint(sprint.id)"><i class="fa fa-trash-o"></i></a> 
 		<a href="@routes.SprintController.editSprint(sprint.id)">@sprint 
 		@if(!utils.StringUtils.isEmpty(sprint.description)) { - @sprint.description } 
 		- @sprint.getTotalStoryPointsCompleted() of @sprint.getTotalStoryPointsPromised() SPs</a>
 		@if(sprint.locked) {
-		<a href="@routes.SprintController.unlockSprint(sprint.id)"><i class="fa fa-unlock"></i></a></li>	
+		<a href="@routes.SprintController.unlockSprint(sprint.id)"><i class="fa fa-lock"></i></a></li>	
 		} else {
-		<a href="@routes.SprintController.lockSprint(sprint.id)"><i class="fa fa-lock"></i></a></li>	
+		<a href="@routes.SprintController.lockSprint(sprint.id)"><i class="fa fa-unlock"></i></a></li>	
 		}
 	}
 	</ul>
