@@ -6,7 +6,7 @@
 	<script>
 		var rawChartData = {
 		labels : [@for(sprint <- sprints) {
-			"Sprint @sprint.name",
+			"Sprint @sprint",
 		}],
 		datasets : [
 			{
@@ -65,11 +65,11 @@
 @templates.main("Velocity Chart", scripts) {
 		<div style="width: 50%">
 			<h2>Story Points Promised vs. Completed</h2>
-			<canvas id="velocity-raw-canvas" height="450" width="600"></canvas>
+			<canvas id="velocity-raw-canvas" height="450" width="800"></canvas>
 		</div>
 		
 		<div style="width: 50%">
 			<h2>Percentage of Points Completed</h2>
-			<canvas id="velocity-percent-canvas" height="450" width="600"></canvas>
+			<canvas id="velocity-percent-canvas" height="450" width="800"></canvas>
 		</div>
 }

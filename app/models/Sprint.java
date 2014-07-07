@@ -1,5 +1,6 @@
 package models;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +15,8 @@ import play.db.ebean.Model;
 
 @Entity
 public class Sprint extends Model {
+	
+	public static SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyy");
 
 	/**
 	 * 
@@ -93,6 +96,10 @@ public class Sprint extends Model {
 			points += employeeSprint.storyPointsCompleted;
 		}
 		return points;
+	}
+	
+	public String toString() {
+		return name+" ("+dateFormatter.format(startDate)+")";
 	}
 	
 	public static Finder<Long, Sprint> find = new Finder<Long, Sprint>(Long.class, Sprint.class);

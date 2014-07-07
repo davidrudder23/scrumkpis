@@ -1,12 +1,8 @@
 package controllers;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-
-import com.avaje.ebean.Ebean;
 
 import utils.StringUtils;
 import play.Logger;
@@ -15,7 +11,6 @@ import play.mvc.Security.Authenticated;
 import utils.AuthenticationUtil;
 import models.Employee;
 import models.ScrumMaster;
-import models.Sprint;
 
 @Authenticated(AuthenticationUtil.class)
 public class EmployeeController extends ParentController {

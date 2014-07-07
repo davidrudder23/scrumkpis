@@ -1,8 +1,6 @@
 package controllers;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,7 +15,6 @@ import play.Logger;
 import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security.Authenticated;
-import scala.Array;
 import utils.AuthenticationUtil;
 import utils.StringUtils;
 
@@ -153,13 +150,11 @@ public class SprintController extends ParentController {
 			sprint.description = description;
 		}
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-			sprint.startDate = sdf.parse(getFormValue("start-date"));
+			sprint.startDate = Sprint.dateFormatter.parse(getFormValue("start-date"));
 		} catch (ParseException e) {
 			Logger.debug("Can't parse date", e);
 		}
 		sprint.scrumMaster = scrumMaster;
-		sprint.locked = false;
 		
 		sprint.save();
 		
@@ -194,5 +189,43 @@ public class SprintController extends ParentController {
 		return redirect(routes.SprintController.editSprint(sprint.id));
 	}
 
+	public static Result lockSprint(Long id) {
+		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
+		Sprint sprint = Sprint.find.byId(id);
+		if (sprint == null) {
+			flash().put("error", "Could not lock that sprint");
+			return redirect(routes.SprintController.sprints());
+		}
+		
+		if (!scrumMaster.equals(sprint.scrumMaster)) {
+			flash().put("error", "Could not lock that sprint");
+			return redirect(routes.SprintController.sprints());
+		}
+		
+		sprint.locked = true;
+		sprint.save();
+		
+		return redirect(routes.SprintController.sprints());
 
+	}
+
+	public static Result unlockSprint(Long id) {
+		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
+		Sprint sprint = Sprint.find.byId(id);
+		if (sprint == null) {
+			flash().put("error", "Could not unlock that sprint");
+			return redirect(routes.SprintController.sprints());
+		}
+		
+		if (!scrumMaster.equals(sprint.scrumMaster)) {
+			flash().put("error", "Could not unlock that sprint");
+			return redirect(routes.SprintController.sprints());
+		}
+		
+		sprint.locked = false;
+		sprint.save();
+		
+		return redirect(routes.SprintController.sprints());
+
+	}
 }

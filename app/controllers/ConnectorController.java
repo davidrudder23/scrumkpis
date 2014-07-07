@@ -54,7 +54,7 @@ public class ConnectorController extends ParentController {
 		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
 		Connector connector = Connector.getConnector(connectorName);
 		connector.run(scrumMaster);
-		return redirect(controllers.routes.ConnectorController.editConnector(connectorName));
+		return redirect(controllers.routes.SprintController.sprints());
 
 	}
 

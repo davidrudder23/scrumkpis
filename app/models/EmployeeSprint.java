@@ -21,10 +21,10 @@ public class EmployeeSprint extends Model {
 	@Id
 	public Long id;
 	
-	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToOne
 	public Employee employee;
 	
-	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToOne
 	public Sprint sprint;
 	
 	public float storyPointsAvailable;
