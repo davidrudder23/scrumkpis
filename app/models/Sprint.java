@@ -98,6 +98,15 @@ public class Sprint extends Model {
 		return points;
 	}
 	
+	public int getTotalReopens() {
+		int points = 0;
+		List<EmployeeSprint> employeeSprints = getEmployeeSprints();
+		for (EmployeeSprint employeeSprint: employeeSprints) {
+			points += employeeSprint.numReopens;
+		}
+		return points;
+	}
+	
 	public String toString() {
 		return name+" ("+dateFormatter.format(startDate)+")";
 	}
