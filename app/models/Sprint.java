@@ -42,6 +42,12 @@ public class Sprint extends Model {
 		List<EmployeeSprint> employeeSprints = EmployeeSprint.find.where().eq("sprint", this).findList();
 		return employeeSprints;
 	}
+	
+	
+	public EmployeeSprint getEmployeeSprint(Employee employee) {
+		EmployeeSprint employeeSprint = EmployeeSprint.find.where().eq("sprint", this).eq("employee", employee).findUnique();
+		return employeeSprint;
+	}
 
 	public List<Employee> getEmployees() {
 		List<EmployeeSprint> employeeSprints = EmployeeSprint.find.where().eq("sprint", this).findList();

@@ -11,18 +11,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Hex;
 import org.w3c.dom.Node;
 
+import play.Logger;
 import play.Play;
 import play.mvc.Http;
 import play.mvc.Http.Request;
@@ -183,6 +186,18 @@ public class StringUtils {
 		} catch (Exception anyExc) {
 		}
 		return "pretty printing xml didn't work";
+	}
+	
+	public static String getRandomColor() {
+		Random random = new Random();
+	    String[] letters = {"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"};  
+	    String color = "rgba(";  
+	    for (int i = 0; i < 3; i++ ) {  
+	    	int colorNum = random.nextInt(256);
+	        color += colorNum+",";  
+	    }  
+	    color += "0.0)";
+	    return color;  
 	}
 
 }

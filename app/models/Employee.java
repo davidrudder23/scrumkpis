@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import play.db.ebean.Model;
+import utils.StringUtils;
 
 @Entity
 public class Employee extends Model {
@@ -41,6 +42,8 @@ public class Employee extends Model {
 	public String description;
 	
 	public int defaultStoryPointsPerSprint;
+	
+	public String color = StringUtils.getRandomColor();
 	
 	@OneToMany(mappedBy="employee", cascade=CascadeType.ALL)
 	public Set<EmployeeSprint> employeeSprints;

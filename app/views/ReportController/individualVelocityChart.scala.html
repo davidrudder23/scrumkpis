@@ -1,0 +1,51 @@
+@(sprints: List[Sprint], employees: List[Employee])
+
+@scripts = {
+	<script src="@routes.Assets.at("javascripts/Chart.min.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/legend.js")" type="text/javascript"></script>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/legend.js")">
+	
+	<script>
+		var storyPointsData = {
+		labels : [@for(sprint <- sprints) {
+			"Sprint @sprint",
+		}],
+		datasets : [
+		  @for(employee <- employees) {
+			{
+				label : "@employee.lastName, @employee.firstName",
+				title : "@employee.lastName, @employee.firstName",
+				
+			    datasetFill : false,
+//	            strokeColor : "rgba(@(employee.id%10),187,206,1)",
+	            strokeColor : "@employee.color",
+	            pointColor : "@employee.color",
+	            pointStrokeColor : "#fff",
+				data : [@for(sprint <- sprints) {
+					@if(sprint.getEmployeeSprint(employee)!=null) {
+						(@((sprint.getEmployeeSprint(employee).storyPointsCompleted/sprint.getEmployeeSprint(employee).storyPointsAvailable)*100)),
+					}
+				}0]
+			},
+		  }
+		]
+		}
+
+
+		window.onload = function(){
+			var storyPointsCanvas = document.getElementById("story-points-canvas").getContext("2d");
+			window.storyPointsLine = new Chart(storyPointsCanvas).Line(storyPointsData, {
+				responsive : true
+			});
+		    legend(document.getElementById("percentage-legend"), storyPointsData);
+		}
+	</script>
+}
+
+@templates.main("Velocity Chart", scripts) {
+		<div id="percentage-legend"></div>
+		<div style="width: 50%">
+			<h2>Percentage of Points Promised vs. Completed</h2>
+			<canvas id="story-points-canvas" height="650" width="800"></canvas>
+		</div>
+}
