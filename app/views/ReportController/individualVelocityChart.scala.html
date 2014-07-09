@@ -16,8 +16,6 @@
 				label : "@employee.lastName, @employee.firstName",
 				title : "@employee.lastName, @employee.firstName",
 				
-			    datasetFill : false,
-//	            strokeColor : "rgba(@(employee.id%10),187,206,1)",
 	            strokeColor : "@employee.color",
 	            pointColor : "@employee.color",
 	            pointStrokeColor : "#fff",
@@ -35,7 +33,8 @@
 		window.onload = function(){
 			var storyPointsCanvas = document.getElementById("story-points-canvas").getContext("2d");
 			window.storyPointsLine = new Chart(storyPointsCanvas).Line(storyPointsData, {
-				responsive : true
+				responsive : true,
+				datasetFill: false
 			});
 		    legend(document.getElementById("percentage-legend"), storyPointsData);
 		}
