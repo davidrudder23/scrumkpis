@@ -190,7 +190,6 @@ public class StringUtils {
 	
 	public static String getRandomColor() {
 		Random random = new Random();
-	    String[] letters = {"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"};  
 	    String color = "rgba(";  
 	    for (int i = 0; i < 3; i++ ) {  
 	    	int colorNum = random.nextInt(256);
