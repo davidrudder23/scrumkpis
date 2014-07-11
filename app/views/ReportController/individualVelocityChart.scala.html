@@ -3,7 +3,7 @@
 @scripts = {
 	<script src="@routes.Assets.at("javascripts/Chart.min.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.at("javascripts/legend.js")" type="text/javascript"></script>
-    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/legend.js")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/legend.css")">
 	
 	<script>
 		var storyPointsData = {
@@ -43,7 +43,7 @@
 	</script>
 }
 
-@templates.main("Velocity Chart", scripts) {
+@templates.main("Indivual Velocity Chart", scripts) {
 		<div id="percentage-legend"></div>
 		<div style="width: 70%">
 			<h2>Percentage of Points Promised vs. Completed</h2>

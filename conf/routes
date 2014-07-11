@@ -34,6 +34,7 @@ GET		/deleteEmployee/:employeeId				controllers.EmployeeController.deleteEmploye
 # Reports
 GET		/reports/velocity						controllers.ReportController.velocityChart()
 GET		/reports/individual						controllers.ReportController.individualVelocityChart()
+GET		/reports/opentickets					controllers.ReportController.openTicketsChart()
 
 # Connectors
 GET		/connectors								controllers.ConnectorController.listConnectors()

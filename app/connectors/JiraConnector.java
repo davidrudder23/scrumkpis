@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +23,7 @@ import utils.StringUtils;
 import models.ConnectorConfiguration;
 import models.Employee;
 import models.EmployeeSprint;
+import models.OpenTicketLog;
 import models.ScrumMaster;
 import models.Sprint;
 
@@ -34,6 +36,7 @@ public class JiraConnector extends Connector {
 		String password = ConnectorConfiguration.getValue(scrumMaster, getName(), "password");
 		String velocityQuery = ConnectorConfiguration.getValue(scrumMaster, getName(), "velocityQuery");
 		String churnQuery = ConnectorConfiguration.getValue(scrumMaster, getName(), "churnQuery");
+		String untestedQuery = ConnectorConfiguration.getValue(scrumMaster, getName(), "untestedQuery");
 		String storyPointsCustomFieldID = ConnectorConfiguration.getValue(scrumMaster, getName(), "storyPointsCustomFieldID");
 		String resolverCustomFieldID = ConnectorConfiguration.getValue(scrumMaster, getName(), "resolverCustomFieldID");
 		
@@ -66,7 +69,8 @@ public class JiraConnector extends Connector {
 				calculateChurn(churnQuery, resolverCustomFieldID, sdf, jiraClient, sprint);
 			}
 			
-			
+			calculateUntestes(untestedQuery, jiraClient, scrumMaster);
+
 		} catch (JiraException e) {
 			e.printStackTrace();
 			Logger.warn("Could not access jira at url "+jiraURL, e);
@@ -191,6 +195,20 @@ public class JiraConnector extends Connector {
 		}
 	}
 	
+	private void calculateUntestes(String untestedQuery, JiraClient jiraClient, ScrumMaster scrumMaster) throws JiraException {
+		Logger.debug ("Looking for untested tickets with "+untestedQuery);
+		SearchResult searchResult = jiraClient.searchIssues(untestedQuery, 600);
+
+		List<Issue> issues = searchResult.issues;
+		Logger.debug ("found "+issues.size()+" issues");
+		
+		OpenTicketLog openTicketLog = new OpenTicketLog();
+		openTicketLog.date = new Date();
+		openTicketLog.numOpenTickets = issues.size();
+		openTicketLog.scrumMaster = scrumMaster;
+		openTicketLog.save();
+	}
+	
 	public List<String> getParameterNames() {
 		List<String> paramNames = new ArrayList<String>();
 		paramNames.add("jiraURL");
@@ -198,6 +216,7 @@ public class JiraConnector extends Connector {
 		paramNames.add("password");
 		paramNames.add("velocityQuery");
 		paramNames.add("churnQuery");
+		paramNames.add("untestedQuery");
 		paramNames.add("storyPointsCustomFieldID");
 		paramNames.add("resolverCustomFieldID");
 		return paramNames;

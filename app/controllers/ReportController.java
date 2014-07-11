@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import models.Employee;
+import models.OpenTicketLog;
 import models.ScrumMaster;
 import models.Sprint;
 import play.mvc.Result;
@@ -90,5 +91,19 @@ public class ReportController extends ParentController {
 			}
 		}
 		return ok(views.html.ReportController.individualVelocityChart.render(sprints, employees));
+	}
+	
+	public static Result openTicketsChart() {
+		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
+		List<OpenTicketLog> openTickets = OpenTicketLog.find.where().eq("scrumMaster", scrumMaster).findList();
+		Collections.sort(openTickets, new Comparator<OpenTicketLog>() {
+
+			@Override
+			public int compare(OpenTicketLog o1, OpenTicketLog o2) {
+				return o1.date.compareTo(o2.date);
+			}
+			
+		});
+		return ok(views.html.ReportController.openTicketsChart.render(openTickets));
 	}
 }
