@@ -69,7 +69,7 @@ public class JiraConnector extends Connector {
 				calculateChurn(churnQuery, resolverCustomFieldID, sdf, jiraClient, sprint);
 			}
 			
-			calculateUntestes(untestedQuery, jiraClient, scrumMaster);
+			calculateUntested(untestedQuery, jiraClient, scrumMaster);
 
 		} catch (JiraException e) {
 			e.printStackTrace();
@@ -195,7 +195,7 @@ public class JiraConnector extends Connector {
 		}
 	}
 	
-	private void calculateUntestes(String untestedQuery, JiraClient jiraClient, ScrumMaster scrumMaster) throws JiraException {
+	private void calculateUntested(String untestedQuery, JiraClient jiraClient, ScrumMaster scrumMaster) throws JiraException {
 		Logger.debug ("Looking for untested tickets with "+untestedQuery);
 		SearchResult searchResult = jiraClient.searchIssues(untestedQuery, 600);
 
