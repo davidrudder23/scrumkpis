@@ -9,6 +9,7 @@ import models.Employee;
 import models.OpenTicketLog;
 import models.ScrumMaster;
 import models.Sprint;
+import play.Logger;
 import play.mvc.Result;
 import play.mvc.Security.Authenticated;
 import utils.AuthenticationUtil;
@@ -90,6 +91,7 @@ public class ReportController extends ParentController {
 				}
 			}
 		}
+		Logger.debug("Employees="+employees.toString());
 		return ok(views.html.ReportController.individualVelocityChart.render(sprints, employees));
 	}
 	

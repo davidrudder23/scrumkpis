@@ -32,6 +32,8 @@ public class ScrumMaster extends Model {
 	public String hashedPassword;
 	public String salt;
 	
+	public int sprintLengthInDays = 14;
+	
 	@OneToMany(mappedBy="scrumMaster")
 	public Set<Sprint> sprints;
 

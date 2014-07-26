@@ -18,6 +18,7 @@ import net.rcarz.jiraclient.JiraException;
 
 import com.avaje.ebean.Ebean;
 
+import controllers.Authentication;
 import play.Logger;
 import utils.StringUtils;
 import models.ConnectorConfiguration;
@@ -80,10 +81,11 @@ public class JiraConnector extends Connector {
 	private void calculateVelocity(String velocityQuery, String storyPointsCustomFieldID, String resolverCustomFieldID, SimpleDateFormat sdf,
 			JiraClient jiraClient, Sprint sprint) throws JiraException {
 		// Calculate velocity
+		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
 		String mungedQuery = velocityQuery.replaceAll("%s", "'"+sdf.format(sprint.startDate)+"'");
 		Calendar endDate = Calendar.getInstance();
 		endDate.setTime(sprint.startDate);
-		endDate.add(Calendar.DAY_OF_YEAR, 14);
+		endDate.add(Calendar.DAY_OF_YEAR, scrumMaster.sprintLengthInDays);
 		
 		mungedQuery = mungedQuery.replaceAll("%e", "'"+sdf.format(endDate.getTime())+"'");
 		

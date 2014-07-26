@@ -25,6 +25,7 @@ public abstract class Connector {
 		List<Connector> connectors = new ArrayList<Connector>();
 		
 		connectors.add(new JiraConnector());
+		connectors.add(new GitConnector());
 		return connectors;
 	}
 	
@@ -36,6 +37,10 @@ public abstract class Connector {
 		
 		if (connectorName.equalsIgnoreCase("jira")) {
 			return new JiraConnector();
+		}
+		
+		if (connectorName.equalsIgnoreCase("git")) {
+			return new GitConnector();
 		}
 		
 		Logger.warn ("Connector "+connectorName+" not found");
