@@ -24,6 +24,7 @@ POST	/addsprint								controllers.SprintController.addSprint()
 POST	/updatesprint							controllers.SprintController.updateSprint()
 POST	/addEmployee 							controllers.SprintController.addEmployee
 GET		/removeEmployee/:sprintId/:employeeId	controllers.SprintController.removeEmployee(sprintId: Long, employeeId: Long)
+GET		/gitcommits/:sprintId					controllers.SprintController.gitCommits(sprintId: Long)
 
 # Employee controller
 GET		/employees								controllers.EmployeeController.employees()
@@ -40,7 +41,7 @@ GET		/reports/opentickets					controllers.ReportController.openTicketsChart()
 GET		/connectors								controllers.ConnectorController.listConnectors()
 GET		/connector/:connectorName				controllers.ConnectorController.editConnector(connectorName: String)
 POST	/connector/:connectorName				controllers.ConnectorController.updateConnector(connectorName: String)
-GET	/connector/:connectorName/run			controllers.ConnectorController.runConnector(connectorName: String)
+GET		/connector/:connectorName/run			controllers.ConnectorController.runConnector(connectorName: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

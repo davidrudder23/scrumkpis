@@ -2,6 +2,7 @@ package models;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -111,6 +112,24 @@ public class Sprint extends Model {
 			points += employeeSprint.numReopens;
 		}
 		return points;
+	}
+	
+	public Date getEndDate() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(startDate);
+		calendar.add(Calendar.DAY_OF_YEAR, scrumMaster.sprintLengthInDays);
+		return calendar.getTime();
+	}
+	
+	public String getFormattedEndDate() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(startDate);
+		calendar.add(Calendar.DAY_OF_YEAR, scrumMaster.sprintLengthInDays);
+		return dateFormatter.format(calendar.getTime());
+	}
+	
+	public String getFormattedStartDate() {
+		return dateFormatter.format(startDate);
 	}
 	
 	public String toString() {

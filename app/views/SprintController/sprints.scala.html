@@ -8,10 +8,12 @@
 		@if(!utils.StringUtils.isEmpty(sprint.description)) { - @sprint.description } 
 		- @sprint.getTotalStoryPointsCompleted() of @sprint.getTotalStoryPointsPromised() SPs</a>
 		@if(sprint.locked) {
-		<a href="@routes.SprintController.unlockSprint(sprint.id)"><i class="fa fa-lock"></i></a></li>	
+		<a href="@routes.SprintController.unlockSprint(sprint.id)"><i class="fa fa-lock"></i></a>	
 		} else {
-		<a href="@routes.SprintController.lockSprint(sprint.id)"><i class="fa fa-unlock"></i></a></li>	
+		<a href="@routes.SprintController.lockSprint(sprint.id)"><i class="fa fa-unlock"></i></a>	
 		}
+		</li>
+		<li> - <a href="@routes.SprintController.gitCommits(sprint.id)">Git Commits</a></li>
 	}
 	</ul>
 	

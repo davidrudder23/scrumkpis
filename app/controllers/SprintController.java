@@ -7,8 +7,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import models.ConnectorConfiguration;
 import models.Employee;
 import models.EmployeeSprint;
+import models.GitCommit;
 import models.ScrumMaster;
 import models.Sprint;
 import play.Logger;
@@ -227,5 +229,20 @@ public class SprintController extends ParentController {
 		
 		return redirect(routes.SprintController.sprints());
 
+	}
+	
+	public static Result gitCommits(Long sprintId) {
+		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
+
+		Sprint sprint = Sprint.find.byId(sprintId);
+		
+		List<GitCommit> gitCommits = GitCommit.find.where().eq("sprint", sprint).findList();
+		
+		String gitURL = ConnectorConfiguration.getValue(scrumMaster, "Git", "gitURL");
+		if (StringUtils.isEmpty(gitURL)) {
+			gitURL = "https://git.dtdo.net/git/?p=home;a=commit;h=";
+		}
+
+		return ok(views.html.SprintController.gitCommits.render(sprint, scrumMaster, gitCommits, gitURL));
 	}
 }
