@@ -57,7 +57,6 @@ public class GitConnector extends Connector {
 			long sprintLength = scrumMaster.sprintLengthInDays * 24 * 60 * 60 * 1000;
 			for (RevCommit revCommit : revCommits) {
 				for (Sprint sprint : activeSprints) {
-					Logger.debug(sprint.toString());
 					long sprintStart = sprint.startDate.getTime();
 					long commitTime = ((long) revCommit.getCommitTime()) * 1000;
 
