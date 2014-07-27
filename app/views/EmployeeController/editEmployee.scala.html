@@ -1,6 +1,70 @@
-@(employee: models.Employee, title: String)
+@(employee: models.Employee, title: String, employeeSprints: List[EmployeeSprint], gitCommits: List[GitCommit], gitURL: String)
 
-@templates.main(title) {
+@scripts = {
+	<script src="@routes.Assets.at("javascripts/Chart.min.js")" type="text/javascript"></script>
+	
+	<script>
+		var rawChartData = {
+		labels : [@for(employeeSprint <- employeeSprints) {
+			"Sprint @employeeSprint.sprint.name",
+		}],
+		datasets : [
+			{
+				label : "Points Completed",
+				fillColor : "rgba(220,110,110,0.5)",
+				strokeColor : "rgba(220,220,220,0.8)",
+				highlightFill: "rgba(220,220,220,0.75)",
+				highlightStroke: "rgba(220,220,220,1)",
+				data : [@for(employeeSprint <- employeeSprints) {
+					@employeeSprint.storyPointsCompleted,
+				}]
+			},
+			{
+				label : "Points Promised",
+				fillColor : "rgba(110,220,110,0.5)",
+				strokeColor : "rgba(220,220,220,0.8)",
+				highlightFill: "rgba(220,220,220,0.75)",
+				highlightStroke: "rgba(220,220,220,1)",
+				data : [@for(employeeSprint <- employeeSprints) {
+					@employeeSprint.storyPointsAvailable,
+				}]
+			}
+			]
+		}
+
+		var percentChartData = {
+				labels : [@for(employeeSprint <- employeeSprints) {
+					"Sprint @employeeSprint.sprint.name",
+				}],
+				datasets : [
+					{
+						label : "Points Completed",
+						fillColor : "rgba(220,110,110,0.5)",
+						strokeColor : "rgba(220,220,220,0.8)",
+						highlightFill: "rgba(220,220,220,0.75)",
+						highlightStroke: "rgba(220,220,220,1)",
+						data : [@for(employeeSprint <- employeeSprints) {
+							@((employeeSprint.storyPointsCompleted*100)/employeeSprint.storyPointsAvailable),
+						}]
+					}
+					]
+				}
+
+
+		window.onload = function(){
+		var velocityRawCanvas = document.getElementById("velocity-raw-canvas").getContext("2d");
+		window.myBar = new Chart(velocityRawCanvas).Bar(rawChartData, {
+			responsive : true
+		});
+		var velocityPercentCanvas = document.getElementById("velocity-percent-canvas").getContext("2d");
+		window.myBar = new Chart(velocityPercentCanvas).Bar(percentChartData, {
+			responsive : true
+		});
+	}
+	</script>
+}
+
+@templates.main(title, scripts) {
 <form action="@routes.EmployeeController.updateEmployee(employee.id)" method="POST">
 	<div>
 	<ul>
@@ -19,4 +83,35 @@
 	</ul>
 	</div>
 </form>
+
+<div>
+		<div style="width: 40%; float: left">
+			<h3>Story Points Promised vs. Completed</h3>
+			<canvas id="velocity-raw-canvas" height="750" width="800"></canvas>
+		</div>
+		
+		<div style="width: 40%; float: right">
+			<h3>Percentage of Points Completed</h3>
+			<canvas id="velocity-percent-canvas" height="750" width="800"></canvas>
+		</div>
+		<div style='clear: both;'></div>
+</div>		
+
+<div>
+<h3>Git Commits</h3>
+	@for(gitCommit <- gitCommits) {
+		<div style="margin-bottom: 10px">
+			<div style="float: left; width: 30%"><a href="@gitURL@gitCommit.commitId">@gitCommit.commitId</a><br/>
+			@gitCommit.date<br/>
+			@if(gitCommit.employee==null) {
+			@gitCommit.commiterEmail
+			} else {
+			<a href="@routes.EmployeeController.editEmployee(gitCommit.employee.id)">@gitCommit.commiterEmail</a>
+			}
+			</div>
+			<div style="float: right; width: 70%">@gitCommit.message</div>
+			<div style="clear: both;"></div>
+		</div>
+	}
+</div>
 }

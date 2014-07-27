@@ -9,7 +9,10 @@ import play.Logger;
 import play.mvc.Result;
 import play.mvc.Security.Authenticated;
 import utils.AuthenticationUtil;
+import models.ConnectorConfiguration;
 import models.Employee;
+import models.EmployeeSprint;
+import models.GitCommit;
 import models.ScrumMaster;
 
 @Authenticated(AuthenticationUtil.class)
@@ -66,7 +69,45 @@ public class EmployeeController extends ParentController {
 			employee.id=new Long(0);
 			employee.defaultStoryPointsPerSprint = 15;
 		}
-		return ok(views.html.EmployeeController.editEmployee.render(employee, title));
+		
+		List<EmployeeSprint> employeeSprints = EmployeeSprint.find.where().eq("employee",employee).findList();
+		Collections.sort(employeeSprints, new Comparator<EmployeeSprint>() {
+
+			@Override
+			public int compare(EmployeeSprint employeeSprintA, EmployeeSprint employeeSprintB) {
+				if ((employeeSprintA==null) && (employeeSprintB==null)) {
+					return 0;
+				}
+				if (employeeSprintA==null) {
+					return 1;
+				}
+				if (employeeSprintB==null) {
+					return -1;
+				}
+				
+				if ((employeeSprintA.sprint.startDate==null) && (employeeSprintB.sprint.startDate==null)) {
+					return 0;
+				}
+				if (employeeSprintA.sprint.startDate==null) {
+					return 1;
+				}
+				if (employeeSprintB.sprint.startDate==null) {
+					return -1;
+				}
+				
+				return employeeSprintA.sprint.startDate.compareTo(employeeSprintB.sprint.startDate);
+			}
+			
+		});
+		
+		List<GitCommit> gitCommits = GitCommit.find.where().eq("employee", employee).orderBy("date").findList();
+		
+		String gitURL = ConnectorConfiguration.getValue(scrumMaster, "Git", "gitURL");
+		if (StringUtils.isEmpty(gitURL)) {
+			gitURL = "https://git.dtdo.net/git/?p=home;a=commit;h=";
+		}
+			
+		return ok(views.html.EmployeeController.editEmployee.render(employee, title, employeeSprints, gitCommits, gitURL));
 	}
 	
 	public static Result updateEmployee(Long id) {

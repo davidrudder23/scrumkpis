@@ -41,16 +41,16 @@ public class SprintController extends ParentController {
 					return -1;
 				}
 				
-				if ((sprintA.name==null) && (sprintB.name==null)) {
+				if ((sprintA.startDate==null) && (sprintB.startDate==null)) {
 					return 0;
 				}
-				if (sprintA.name==null) {
+				if (sprintA.startDate==null) {
 					return 1;
 				}
-				if (sprintB.name==null) {
+				if (sprintB.startDate==null) {
 					return -1;
 				}
-				return sprintA.name.compareTo(sprintB.name);
+				return sprintA.startDate.compareTo(sprintB.startDate);
 			}
 			
 		});
