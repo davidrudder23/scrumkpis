@@ -100,14 +100,11 @@
 <div>
 <h3>Git Commits</h3>
 	@for(gitCommit <- gitCommits) {
-		<div style="margin-bottom: 10px">
-			<div style="float: left; width: 30%"><a href="@gitURL@gitCommit.commitId">@gitCommit.commitId</a><br/>
+		<div style="margin-bottom: 10px; border: outset thin; background-color: #eee">
+			<div style="float: left; width: 30%">
+			<a href="@routes.SprintController.editSprint(gitCommit.sprint.id)">Sprint: @gitCommit.sprint.name</a><br/>
+			<a href="@gitURL@gitCommit.commitId">@gitCommit.commitId</a><br/>
 			@gitCommit.date<br/>
-			@if(gitCommit.employee==null) {
-			@gitCommit.commiterEmail
-			} else {
-			<a href="@routes.EmployeeController.editEmployee(gitCommit.employee.id)">@gitCommit.commiterEmail</a>
-			}
 			</div>
 			<div style="float: right; width: 70%">@gitCommit.message</div>
 			<div style="clear: both;"></div>

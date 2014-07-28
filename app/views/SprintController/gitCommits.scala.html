@@ -3,7 +3,7 @@
 @templates.main("Git Commits for sprint "+sprint.name) {
 	<h1>Git Commits for Sprint @sprint.name from @sprint.getFormattedStartDate() to @sprint.getFormattedEndDate()</h1>
 	@for(gitCommit <- gitCommits) {
-		<div style="margin-bottom: 10px">
+		<div style="margin-bottom: 10px; border: outset thin; background-color: #eee">
 			<div style="float: left; width: 30%"><a href="@gitURL@gitCommit.commitId">@gitCommit.commitId</a><br/>
 			@gitCommit.date<br/>
 			@if(gitCommit.employee==null) {

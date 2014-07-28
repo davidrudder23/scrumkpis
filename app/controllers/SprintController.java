@@ -19,6 +19,7 @@ import play.mvc.Result;
 import play.mvc.Security.Authenticated;
 import utils.AuthenticationUtil;
 import utils.StringUtils;
+import views.html.SprintController.sprints;
 
 @Authenticated(AuthenticationUtil.class)
 public class SprintController extends ParentController {
@@ -244,5 +245,25 @@ public class SprintController extends ParentController {
 		}
 
 		return ok(views.html.SprintController.gitCommits.render(sprint, scrumMaster, gitCommits, gitURL));
+	}
+	
+	public static Result lockAllSprints() {
+		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
+		List<Sprint> sprints = Sprint.find.where().eq("scrumMaster", scrumMaster).findList();
+		for (Sprint sprint: sprints) {
+			sprint.locked = true;
+			sprint.save();
+		}
+		return redirect(routes.SprintController.sprints());
+	}
+
+	public static Result unlockAllSprints() {
+		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
+		List<Sprint> sprints = Sprint.find.where().eq("scrumMaster", scrumMaster).findList();
+		for (Sprint sprint: sprints) {
+			sprint.locked = false;
+			sprint.save();
+		}
+		return redirect(routes.SprintController.sprints());
 	}
 }
