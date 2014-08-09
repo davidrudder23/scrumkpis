@@ -32,6 +32,8 @@ public class Employee extends Model {
 	@ManyToOne
 	public ScrumMaster scrumMaster;
 	
+	public String username;
+	
 	public String firstName;
 	public String lastName;
 	public String email;

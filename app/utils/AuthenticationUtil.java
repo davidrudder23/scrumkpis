@@ -9,7 +9,7 @@ public class AuthenticationUtil extends Authenticator {
 	
     @Override
     public String getUsername(Context ctx) {
-        return ctx.session().get("userid");
+        return ctx.session().get("scrummaster_id");
     }
 
     @Override
