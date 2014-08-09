@@ -16,6 +16,10 @@ public class JiraIssue extends Model {
 	@Id
 	public Long id;
 	
+	public String authorName;
+	
+	public String authorEmail;
+	
 	@ManyToOne
 	public Sprint resolutionSprint;
 
@@ -23,6 +27,8 @@ public class JiraIssue extends Model {
 	public Employee resolver;
 	
 	public String jiraKey;
+	
+	public String summary;
 	
 	public static Finder<Long, JiraIssue> find = new Finder<Long, JiraIssue>(Long.class, JiraIssue.class);
 

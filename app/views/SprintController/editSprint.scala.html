@@ -1,4 +1,4 @@
-@(sprint: Sprint, title: String, employees: List[Employee], scrumMaster: ScrumMaster)
+@(sprint: Sprint, title: String, employees: List[Employee], scrumMaster: ScrumMaster, jiraIssues: List[JiraIssue])
 
 @templates.main(title) {
 	<form action="@routes.SprintController.updateSprint()" method="POST">
@@ -39,5 +39,14 @@
 		}
 	</select>
 	</form>
+	</div>
+	
+	<h2>Jira Issues Resolved in this Sprint</h2>
+	<div>
+		<ul>
+		@for(jiraIssue <- jiraIssues) {
+			<li><label><a href="@routes.JiraController.issue(jiraIssue.jiraKey)">@jiraIssue.jiraKey</a>:</label> @jiraIssue.summary</li>
+		}
+		</ul>
 	</div>
 }

@@ -1,9 +1,9 @@
 @(issue: net.rcarz.jiraclient.Issue)
-@templates.main("Jira Issue") {
-Issue
+@templates.main("Jira Issue ") {
 <h2>@issue.getSummary()</h2>
 <div>
 <ul>
+<li><label>Author: </label>@issue.getReporter().getDisplayName() - @issue.getReporter().getEmail()</li>
 <li><label>Assigned To: </label>@issue.getAssignee()</li>
 <li><label>Status: </label>@issue.getStatus().getName()</li>
 </ul>
@@ -22,6 +22,8 @@ Issue
 	}
 	<br/>	
 </div>
+
+@if(issue.getSubtasks().size()>0) {
 <h3>Subtasks</h3>
 <div>
 	@for(subTask <- issue.getSubtasks()) {
@@ -29,12 +31,20 @@ Issue
 		@subTask.getSummary()<br/>
 	}
 </div>
+}
+
 @if(issue.getIssueLinks().size()>0) {
 	<h3>Related Issues</h3>
 	<div>
 		@for(issueLink <- issue.getIssueLinks()) {
-			<label>@issueLink.getOutwardIssue().getKey()</label>
-			@issueLink.getOutwardIssue().getSummary()<br/>
+			@if(issueLink.getOutwardIssue() != null) {
+				<label><a href="@routes.JiraController.issue(issueLink.getOutwardIssue().getKey())">@issueLink.getOutwardIssue().getKey()</a></label>
+				@issueLink.getOutwardIssue().getSummary()<br/>
+			}
+			@if(issueLink.getInwardIssue() != null) {
+				<label><a href="@routes.JiraController.issue(issueLink.getInwardIssue().getKey())">@issueLink.getInwardIssue().getKey()</a></label>
+				@issueLink.getInwardIssue().getSummary()<br/>
+			}
 		}
 		<br/>	
 	</div>

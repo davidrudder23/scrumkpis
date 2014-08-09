@@ -121,7 +121,10 @@ public class JiraConnector extends Connector {
 			if (JiraIssue.find.where().eq("jiraKey", issue.getKey()).findRowCount()<=0) {
 				JiraIssue model = new JiraIssue();
 				model.jiraKey = issue.getKey();
+				model.authorName = issue.getReporter().getDisplayName();
+				model.authorEmail = issue.getReporter().getEmail();
 				model.resolutionSprint = sprint;
+				model.summary = issue.getSummary();
 				Employee employee = Employee.find.where().eq("jiraID", resolver).findUnique();
 				if (employee != null) {
 					model.resolver = employee;

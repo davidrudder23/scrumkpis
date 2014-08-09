@@ -11,6 +11,7 @@ import models.ConnectorConfiguration;
 import models.Employee;
 import models.EmployeeSprint;
 import models.GitCommit;
+import models.JiraIssue;
 import models.ScrumMaster;
 import models.Sprint;
 import play.Logger;
@@ -107,7 +108,9 @@ public class SprintController extends ParentController {
 			}
 		}
 		
-		return ok(views.html.SprintController.editSprint.render(sprint, title, employees, scrumMaster));
+		List<JiraIssue> jiraIssues = JiraIssue.find.where().eq("resolutionSprint", sprint).findList();
+		
+		return ok(views.html.SprintController.editSprint.render(sprint, title, employees, scrumMaster, jiraIssues));
 	}
 	
 	public static Result addEmployee() {

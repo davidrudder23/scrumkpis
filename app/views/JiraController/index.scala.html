@@ -1,0 +1,20 @@
+@scripts = {
+	<script>
+	function openIssue() {
+		var issueId = $("#issue-id").val();
+		if (!issueId || issueId=="") {
+			return false;
+		}
+		
+		window.location="/jira/"+issueId;
+		return false;
+	}
+	</script>
+}
+
+@templates.main("Jira Issues", scripts) {
+
+<form onsubmit="return openIssue()">
+<input type="text" name="issue-id" id="issue-id" placeholder="Enter a issue" onchange="return openIssue()">
+</form>
+}
