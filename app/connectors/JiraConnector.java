@@ -24,6 +24,7 @@ import utils.StringUtils;
 import models.ConnectorConfiguration;
 import models.Employee;
 import models.EmployeeSprint;
+import models.JiraIssue;
 import models.OpenTicketLog;
 import models.ScrumMaster;
 import models.Sprint;
@@ -115,6 +116,18 @@ public class JiraConnector extends Connector {
 			}
 			alreadyCountedStoryPoints = new Float(alreadyCountedStoryPoints.floatValue()+storyPoints);
 			storyPointsPerResolver.put(resolver, alreadyCountedStoryPoints);
+			
+			// Add it to the database
+			if (JiraIssue.find.where().eq("jiraKey", issue.getKey()).findRowCount()<=0) {
+				JiraIssue model = new JiraIssue();
+				model.jiraKey = issue.getKey();
+				model.resolutionSprint = sprint;
+				Employee employee = Employee.find.where().eq("jiraID", resolver).findUnique();
+				if (employee != null) {
+					model.resolver = employee;
+				}
+				model.save();
+			}
 		}
 
 		List<EmployeeSprint> employeeSprints = sprint.getEmployeeSprints();

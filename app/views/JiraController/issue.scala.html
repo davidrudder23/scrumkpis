@@ -1,0 +1,42 @@
+@(issue: net.rcarz.jiraclient.Issue)
+@templates.main("Jira Issue") {
+Issue
+<h2>@issue.getSummary()</h2>
+<div>
+<ul>
+<li><label>Assigned To: </label>@issue.getAssignee()</li>
+<li><label>Status: </label>@issue.getStatus().getName()</li>
+</ul>
+</div>
+<div>
+@issue.getDescription()
+</div>
+
+<h3>Comments</h3>
+<div>
+	@for(comment <- issue.getComments()) {
+		<div style="margin-bottom: 10px; border: outset thin; background-color: #eee">
+			<label>@comment.getAuthor().getDisplayName()</label>
+			@comment.getBody()<br/>
+		</div>
+	}
+	<br/>	
+</div>
+<h3>Subtasks</h3>
+<div>
+	@for(subTask <- issue.getSubtasks()) {
+		<label><a href="@routes.JiraController.issue(subTask.getKey())">@subTask.getKey()</a>:</label>
+		@subTask.getSummary()<br/>
+	}
+</div>
+@if(issue.getIssueLinks().size()>0) {
+	<h3>Related Issues</h3>
+	<div>
+		@for(issueLink <- issue.getIssueLinks()) {
+			<label>@issueLink.getOutwardIssue().getKey()</label>
+			@issueLink.getOutwardIssue().getSummary()<br/>
+		}
+		<br/>	
+	</div>
+}
+}
