@@ -18,6 +18,9 @@ import utils.StringUtils;
 @Authenticated(AuthenticationUtil.class)
 public class ReportController extends ParentController {
 
+	public static Result index() {
+		return ok(views.html.ReportController.index.render());
+	}
 	
 	public static Result velocityChart() {
 		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();

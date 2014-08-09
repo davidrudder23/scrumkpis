@@ -35,6 +35,7 @@ POST	/updateEmployee/:employeeId				controllers.EmployeeController.updateEmploye
 GET		/deleteEmployee/:employeeId				controllers.EmployeeController.deleteEmployee(employeeId: Long)
 
 # Reports
+GET		/reports								controllers.ReportController.index()
 GET		/reports/velocity						controllers.ReportController.velocityChart()
 GET		/reports/individual						controllers.ReportController.individualVelocityChart()
 GET		/reports/opentickets					controllers.ReportController.openTicketsChart()
