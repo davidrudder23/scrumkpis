@@ -11,7 +11,10 @@ import net.rcarz.jiraclient.JiraClient;
 import net.rcarz.jiraclient.JiraException;
 import play.Logger;
 import play.mvc.Result;
+import play.mvc.Security.Authenticated;
+import utils.AuthenticationUtil;
 
+@Authenticated(AuthenticationUtil.class)
 public class JiraController extends ParentController {
 	
 	public static Result index() {
