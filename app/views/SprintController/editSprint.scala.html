@@ -15,7 +15,9 @@
 			<tr><th></th><th></th><th>Available SPs</th><th>Completed SPs</th></tr>
 			@for(employeeSprint <- sprint.getEmployeeSprints()) {
 			<tr>
-					<td><a href="@routes.SprintController.removeEmployee(employeeSprint.sprint.id, employeeSprint.employee.id)">X</a></td> 
+					@if(controllers.Authentication.isScrumMaster()) {
+					<td><a href="@routes.SprintController.removeEmployee(employeeSprint.sprint.id, employeeSprint.employee.id)">X</a></td>
+					} 
 					<td>@employeeSprint.employee.firstName @employeeSprint.employee.lastName</td>
 					<td><input type="text" name="employeesprint-@employeeSprint.id-storyPointsAvailable" value="@employeeSprint.storyPointsAvailable"></td>
 					<td><input type="text" name="employeesprint-@employeeSprint.id-storyPointsCompleted" value="@employeeSprint.storyPointsCompleted"></td>

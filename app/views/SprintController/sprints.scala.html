@@ -3,7 +3,7 @@
 @templates.main("Sprints") {
 	<ul>
 	@for(sprint <- sprints) {
-		<li><a href="@routes.SprintController.deleteSprint(sprint.id)"><i class="fa fa-trash-o"></i></a> 
+		@if(controllers.Authentication.isScrumMaster()) {<li><a href="@routes.SprintController.deleteSprint(sprint.id)"><i class="fa fa-trash-o"></i></a> } 
 		<a href="@routes.SprintController.editSprint(sprint.id)">@sprint 
 		@if(!utils.StringUtils.isEmpty(sprint.description)) { - @sprint.description } 
 		- @sprint.getTotalStoryPointsCompleted() of @sprint.getTotalStoryPointsPromised() SPs</a>
@@ -17,8 +17,10 @@
 	}
 	</ul>
 	
+	@if(controllers.Authentication.isScrumMaster()) {
 	<a href="@routes.SprintController.unlockAllSprints()"><i class="fa fa-unlock"></i>Unlock all sprints</a><br/>	
 	<a href="@routes.SprintController.lockAllSprints()"><i class="fa fa-lock"></i>Lock all sprints</a><br/>	
 	
 	<a href="@routes.SprintController.editSprint(0)"><i class="fa fa-plus-square"></i>New Sprint</a>
+	}
 }
