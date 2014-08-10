@@ -3,7 +3,8 @@
 @templates.main("Employees") {
 	<ul>
 	@for(employee <- employees) {
-		<li><a href="@routes.EmployeeController.deleteEmployee(employee.id)">X</a> 
+		<li>
+			@if(controllers.Authentication.isScrumMaster()){<a href="@routes.EmployeeController.deleteEmployee(employee.id)">X</a>} 
 			<a href="@routes.EmployeeController.editEmployee(employee.id)">@employee.lastName, @employee.firstName</a>
 		</li>
 	}

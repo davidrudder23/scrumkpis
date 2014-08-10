@@ -112,6 +112,13 @@ public class EmployeeController extends ParentController {
 	
 	public static Result updateEmployee(Long id) {
 		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
+		
+		if (!Authentication.isScrumMaster()) {
+			if (Authentication.getLoggedInEmployee().id != id) {
+				return redirect(routes.Application.index());
+			}
+		}
+
 		Employee employee = Employee.find.byId(id);
 		boolean isNew = false;
 		if (employee == null) {
@@ -139,6 +146,10 @@ public class EmployeeController extends ParentController {
 	}
 	
 	public static Result deleteEmployee(Long id) {
+		if (!Authentication.isScrumMaster()) {
+			return redirect(routes.EmployeeController.employees());
+		}
+
 		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
 
 		Employee employee = Employee.find.byId(id);

@@ -2,7 +2,9 @@
 
 <ul>
 <li><a href="@routes.ReportController.velocityChart()">Team Velocity</a></li>
-<li><a href="@routes.ReportController.individualVelocityChart()">Individual Velocity</a></li>
+@if(controllers.Authentication.isScrumMaster()) {
+	<li><a href="@routes.ReportController.individualVelocityChart()">Individual Velocity</a></li>
+}
 <li><a href="@routes.ReportController.openTicketsChart()">Open Tickets</a></li>
 </ul>
 }

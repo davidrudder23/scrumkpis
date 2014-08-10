@@ -56,6 +56,11 @@ public class ReportController extends ParentController {
 	}
 	
 	public static Result individualVelocityChart() {
+		if (!Authentication.isScrumMaster()) {
+			redirect(routes.ReportController.index());
+		}
+
+
 		ScrumMaster scrumMaster = Authentication.getLoggedInScrumMaster();
 		List<Sprint> sprints = scrumMaster.getSprints();
 		Collections.sort(sprints, new Comparator<Sprint>() {

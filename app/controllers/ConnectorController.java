@@ -8,9 +8,9 @@ import connectors.ConnectorException;
 import play.Logger;
 import play.mvc.Result;
 import play.mvc.Security.Authenticated;
-import utils.AuthenticationUtil;
+import utils.ScrumMasterAuthenticationUtil;
 
-@Authenticated(AuthenticationUtil.class)
+@Authenticated(ScrumMasterAuthenticationUtil.class)
 public class ConnectorController extends ParentController {
 
 	public static Result listConnectors() {

@@ -25,15 +25,15 @@ public class Authentication extends ParentController {
 		return scrumMaster;
 	}
 	
-	public static ScrumMaster getLoggedInEmployee() {
-		ScrumMaster scrumMaster = null;
+	public static Employee getLoggedInEmployee() {
+		Employee employee = null;
 		
-		String scrumMasterId = session().get("employee_id");
-		if (StringUtils.isEmpty(scrumMasterId)) return scrumMaster;
+		String employeeId = session().get("employee_id");
+		if (StringUtils.isEmpty(employeeId)) return null;
 		
-		scrumMaster = ScrumMaster.find.byId(StringUtils.getLong(scrumMasterId));
+		employee = Employee.find.byId(StringUtils.getLong(employeeId));
 		
-		return scrumMaster;
+		return employee;
 	}
 
 	public static Result login() {
@@ -52,6 +52,7 @@ public class Authentication extends ParentController {
         	String hashedPassword = ScrumMaster.hashPassword(name, scrumMaster.salt, password);
         	if (scrumMaster.hashedPassword.equals(hashedPassword)) {
         		session().put("scrummaster_id", scrumMaster.id+"");
+        		session().put("access_level", "scrumMaster");
         		authenticated = true; 
         	}
     	}
@@ -69,6 +70,8 @@ public class Authentication extends ParentController {
 					connection.getInputStream();
 					Logger.debug ("Authentication succeeded!");
 					
+	        		session().put("access_level", "employee");
+					
 					session().put("employee_id", scrumMaster.id+"");
 					Employee employee = Employee.find.where().eq("scrumMaster", scrumMaster).eq("username", name).findUnique();
 					if (employee == null) {
@@ -78,6 +81,7 @@ public class Authentication extends ParentController {
 						employee.description = "Auto-created during authentication";
 						employee.save();
 						session().put("scrummaster_id", scrumMaster.id+"");
+						Logger.debug ("Employee id="+employee.id);
 						session().put("employee_id", employee.id+"");
 				    	return redirect(controllers.routes.EmployeeController.editEmployee(employee.id));
 
@@ -106,6 +110,16 @@ public class Authentication extends ParentController {
     
     public static Result signup() {
     	return ok(views.html.Authentication.signup.render());
+    }
+    
+    public static boolean isScrumMaster() {
+    	String accessLevel = session().get("access_level");
+    	if (StringUtils.isEmpty(accessLevel)) {
+    		return false;
+    	}
+    	
+    	return accessLevel.equalsIgnoreCase("scrumMaster");
+
     }
 
     public static Result doSignup() {
