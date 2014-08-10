@@ -1,7 +1,9 @@
 @(sprint: Sprint, title: String, employees: List[Employee], scrumMaster: ScrumMaster, jiraIssues: List[JiraIssue])
 
 @templates.main(title) {
-	<form action="@routes.SprintController.updateSprint()" method="POST">
+	@if(controllers.Authentication.isScrumMaster()) {
+		<form action="@routes.SprintController.updateSprint()" method="POST">
+	}
 	<input type="hidden" name="sprintid" value="@sprint.id" />
 	<ul>
 	<li><label>Name</label><input type="text" name="name" value="@sprint.name"></li>
@@ -28,9 +30,12 @@
 		</ul>
 		</div>
 		}
+	@if(controllers.Authentication.isScrumMaster()) {
 		<input type="submit">
 	</form>
+	}
 	
+	@if(controllers.Authentication.isScrumMaster()) {
 	<div>
 	<form action="@routes.SprintController.addEmployee()" name="add-employee-form" method="POST">
 	<input type="hidden" name="sprint-id" value="@sprint.id">
@@ -42,6 +47,7 @@
 	</select>
 	</form>
 	</div>
+	}
 	
 	<h2>Jira Issues Resolved in this Sprint</h2>
 	<div>
