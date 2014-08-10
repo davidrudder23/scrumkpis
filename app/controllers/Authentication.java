@@ -77,6 +77,10 @@ public class Authentication extends ParentController {
 						employee.scrumMaster = scrumMaster;
 						employee.description = "Auto-created during authentication";
 						employee.save();
+						session().put("scrummaster_id", scrumMaster.id+"");
+						session().put("employee_id", employee.id+"");
+				    	return redirect(controllers.routes.EmployeeController.editEmployee(employee.id));
+
 					}
 					
 					Logger.debug ("Scrummaster_id="+scrumMaster.id);
