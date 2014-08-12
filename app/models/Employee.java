@@ -1,5 +1,7 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -8,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import net.rcarz.jiraclient.Issue;
+import connectors.JiraConnector;
 import play.db.ebean.Model;
 import utils.StringUtils;
 
@@ -51,4 +55,22 @@ public class Employee extends Model {
 	
 	public static Finder<Long, Employee> find = new Finder<Long, Employee>(Long.class, Employee.class);
 
+	public List<Issue> getBookmarks() {
+		List<JiraBookmark> bookmarkLinks = JiraBookmark.find.where().eq("employee", this).findList();
+		List<Issue> bookmarks = new ArrayList<>();
+		
+		for (JiraBookmark bookmarkLink: bookmarkLinks) {
+			Issue issue = JiraConnector.getIssue(scrumMaster, bookmarkLink.jiraKey);
+			if (issue != null) {
+				bookmarks.add(issue);
+			}
+		}
+		
+		return bookmarks;
+	}
+	
+	public boolean isBookmark(String jiraKey) {
+		JiraBookmark bookmark = JiraBookmark.find.where().eq("jiraKey", jiraKey).eq("employee", this).findUnique();
+		return bookmark != null;
+	}
 }

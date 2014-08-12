@@ -19,7 +19,9 @@ import net.rcarz.jiraclient.JiraException;
 import com.avaje.ebean.Ebean;
 
 import controllers.Authentication;
+import controllers.routes;
 import play.Logger;
+import play.cache.Cache;
 import utils.StringUtils;
 import models.ConnectorConfiguration;
 import models.Employee;
@@ -238,6 +240,29 @@ public class JiraConnector extends Connector {
 		paramNames.add("storyPointsCustomFieldID");
 		paramNames.add("resolverCustomFieldID");
 		return paramNames;
+	}
+	
+	public static Issue getIssue(ScrumMaster scrumMaster, String jiraKey) {
+		Issue issue = (Issue) Cache.get("jiraissue_"+jiraKey+"_"+scrumMaster.id);
+		if (issue != null) {
+			return issue;
+		}
+		
+		JiraConnector jiraConnector = new JiraConnector();
+		String jiraURL = ConnectorConfiguration.getValue(scrumMaster, jiraConnector.getName(), "jiraURL");
+		String username = ConnectorConfiguration.getValue(scrumMaster, jiraConnector.getName(), "username");
+		String password = ConnectorConfiguration.getValue(scrumMaster, jiraConnector.getName(), "password");
+        BasicCredentials creds = new BasicCredentials(username, password);
+        JiraClient jiraClient = new JiraClient(jiraURL,creds);
+        
+        try {
+			issue = jiraClient.getIssue(jiraKey);
+			Cache.set("jiraissue_"+jiraKey+"_"+scrumMaster.id, issue);
+		} catch (JiraException e) {
+			Logger.warn("Jira error", e);
+		}
+
+        return issue;
 	}
 
 	

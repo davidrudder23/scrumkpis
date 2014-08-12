@@ -1,3 +1,5 @@
+@(bookmarks: List[net.rcarz.jiraclient.Issue])
+
 @scripts = {
 	<script>
 	function openIssue() {
@@ -18,4 +20,15 @@
 <input type="text" name="issue-id" id="issue-id" placeholder="Enter a issue" onchange="return openIssue()">
 <input type="submit" value="Open Ticket"/>
 </form>
+
+@if(bookmarks!=null && bookmarks.size()>0) {
+	<div>
+	<h2>Bookmarked Issues</h2>
+	<ul>
+	@for(bookmark <- bookmarks) {
+	<li><a href="@routes.JiraController.issue(bookmark.getKey())">@bookmark.getKey()</a> - @bookmark.getSummary()</li>
+	}
+	</ul>
+	</div>
+	}
 }

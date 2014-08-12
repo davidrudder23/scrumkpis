@@ -1,6 +1,12 @@
-@(issue: net.rcarz.jiraclient.Issue)
+@(issue: net.rcarz.jiraclient.Issue, employee: Employee)
 @templates.main("Jira Issue ") {
-<h2>@issue.getSummary()</h2>
+<h2>@issue.getSummary()
+@if(employee.isBookmark(issue.getKey())) {
+<a href="@routes.JiraController.removeBookmark(issue.getKey())"><i class="fa fa-bookmark" title="Remove Bookmark"></i></a>
+} else {
+<a href="@routes.JiraController.addBookmark(issue.getKey())"><i class="fa fa-bookmark-o" title="Bookmark"></i></a>
+}
+</h2>
 <div>
 <ul>
 <li><label>Author: </label>@issue.getReporter().getDisplayName() - @issue.getReporter().getEmail()</li>
@@ -10,6 +16,7 @@
 </div>
 <div>
 @issue.getDescription()
+
 </div>
 
 <h3>Comments</h3>
