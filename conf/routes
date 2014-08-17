@@ -39,6 +39,7 @@ GET		/reports								controllers.ReportController.index()
 GET		/reports/velocity						controllers.ReportController.velocityChart()
 GET		/reports/individual						controllers.ReportController.individualVelocityChart()
 GET		/reports/opentickets					controllers.ReportController.openTicketsChart()
+GET		/reports/excel							controllers.ReportController.excel()
 
 # Connectors
 GET		/connectors								controllers.ConnectorController.listConnectors()
