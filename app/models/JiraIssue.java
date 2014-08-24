@@ -32,6 +32,9 @@ public class JiraIssue extends Model {
 	
 	public String summary;
 	
+	@ManyToOne
+	public ScrumMaster scrumMaster;
+	
 	public static Finder<Long, JiraIssue> find = new Finder<Long, JiraIssue>(Long.class, JiraIssue.class);
 	
 	public static JiraIssue findByJiraKey(ScrumMaster scrumMaster, String jiraKey) {

@@ -112,26 +112,38 @@ public class JiraConnector extends Connector {
 			if (StringUtils.isEmpty(resolver)) {
 				continue;
 			}
+			
+			Logger.debug ("1");
 			Float alreadyCountedStoryPoints = storyPointsPerResolver.get(resolver);
 			if (alreadyCountedStoryPoints == null) {
 				alreadyCountedStoryPoints = new Float(0);
 			}
+			Logger.debug ("2");
 			alreadyCountedStoryPoints = new Float(alreadyCountedStoryPoints.floatValue()+storyPoints);
+			Logger.debug ("3");
 			storyPointsPerResolver.put(resolver, alreadyCountedStoryPoints);
-			
+			Logger.debug ("4");
+
 			// Add it to the database
-			if (JiraIssue.find.where().eq("jiraKey", issue.getKey()).findRowCount()<=0) {
+			Logger.debug ("jiraKey="+issue.getKey()+" scrumMaster="+scrumMaster);
+			Logger.debug ("stuff="+JiraIssue.find.where().eq("jiraKey", issue.getKey()).eq("scrumMaster", scrumMaster));
+			List<JiraIssue> existingIssues = JiraIssue.find.where().eq("jiraKey", issue.getKey()).eq("scrumMaster", scrumMaster).findList(); 
+			if ((existingIssues== null) || (existingIssues.size()<=0)) {
+				Logger.debug ("Did not find a matching jira issue");
 				JiraIssue model = new JiraIssue();
 				model.jiraKey = issue.getKey();
 				model.authorName = issue.getReporter().getDisplayName();
 				model.authorEmail = issue.getReporter().getEmail();
 				model.resolutionSprint = sprint;
 				model.summary = issue.getSummary();
+				model.scrumMaster = scrumMaster;
 				Employee employee = Employee.find.where().eq("jiraID", resolver).eq("scrumMaster", scrumMaster).findUnique();
 				if (employee != null) {
 					model.resolver = employee;
 				}
 				model.save();
+			} else {
+					Logger.debug ("found an existing jira issue");
 			}
 		}
 
