@@ -3,7 +3,55 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET     /                           			controllers.Application.index()
+
+# Authentication controller
+GET     /login									controllers.Authentication.login()
+POST	/authenticate							controllers.Authentication.authenticate()
+GET     /logout									controllers.Authentication.logout()
+GET 	/signup									controllers.Authentication.signup()
+POST 	/doSignup								controllers.Authentication.doSignup()
+
+# Sprint controller
+GET		/sprints								controllers.SprintController.sprints()
+GET		/deleteSprint/:sprintId					controllers.SprintController.deleteSprint(sprintId: Long)
+GET		/lockSprint/:sprintId					controllers.SprintController.lockSprint(sprintId: Long)
+GET		/unlockSprint/:sprintId					controllers.SprintController.unlockSprint(sprintId: Long)
+GET		/lockAllSprints							controllers.SprintController.lockAllSprints()
+GET		/unlockAllSprints						controllers.SprintController.unlockAllSprints()
+GET		/editSprint/:sprintId					controllers.SprintController.editSprint(sprintId: Long)
+POST	/editSprint/:sprintId					controllers.SprintController.editSprint(sprintId: Long)
+GET     /addsprint              				controllers.SprintController.addSprint()
+POST	/addsprint								controllers.SprintController.addSprint()
+POST	/updatesprint							controllers.SprintController.updateSprint()
+POST	/addEmployee 							controllers.SprintController.addEmployee
+GET		/removeEmployee/:sprintId/:employeeId	controllers.SprintController.removeEmployee(sprintId: Long, employeeId: Long)
+GET		/gitcommits/:sprintId					controllers.SprintController.gitCommits(sprintId: Long)
+
+# Employee controller
+GET		/employees								controllers.EmployeeController.employees()
+GET		/editEmployee/:employeeId				controllers.EmployeeController.editEmployee(employeeId: Long)
+POST	/updateEmployee/:employeeId				controllers.EmployeeController.updateEmployee(employeeId: Long)
+GET		/deleteEmployee/:employeeId				controllers.EmployeeController.deleteEmployee(employeeId: Long)
+
+# Reports
+GET		/reports								controllers.ReportController.index()
+GET		/reports/velocity						controllers.ReportController.velocityChart()
+GET		/reports/individual						controllers.ReportController.individualVelocityChart()
+GET		/reports/opentickets					controllers.ReportController.openTicketsChart()
+GET		/reports/excel							controllers.ReportController.excel()
+
+# Connectors
+GET		/connectors								controllers.ConnectorController.listConnectors()
+GET		/connector/:connectorName				controllers.ConnectorController.editConnector(connectorName: String)
+POST	/connector/:connectorName				controllers.ConnectorController.updateConnector(connectorName: String)
+GET		/connector/:connectorName/run			controllers.ConnectorController.runConnector(connectorName: String)
+
+# Jira
+GET		/jira									controllers.JiraController.index()
+GET 	/jira/:issueKey							controllers.JiraController.issue(issueKey: String)
+GET 	/jira/removebookmark/:jiraKey			controllers.JiraController.removeBookmark(jiraKey: String)
+GET 	/jira/addbookmark/:jiraKey				controllers.JiraController.addBookmark(jiraKey: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

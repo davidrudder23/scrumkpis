@@ -1,7 +1,16 @@
-@(message: String)
+@()
 
-@main("Welcome to Play") {
+@templates.main("ScrumKPIs") {
 
-    @play20.welcome(message, style = "Java")
-
+<div class="paragraph">
+ScrumKPIs is a project to help report on Agile team performance.  Normally, a 
+ScrumMaster or software manager would use the tools that come with a ticket 
+tracking system.  These tend to lack flexibility because they have a particular
+Agile structure they use.  For instance, you may need to completely close a scrum
+before you can report on it.  This tool allows you to skip a lot of the formality 
+and just get the numbers.
+</div>
+<div class="paragraph">
+Click on <a href="@routes.SprintController.sprints()">Sprints</a> to get started.
+</div>
 }
