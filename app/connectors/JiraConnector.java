@@ -127,7 +127,7 @@ public class JiraConnector extends Connector {
 				model.authorEmail = issue.getReporter().getEmail();
 				model.resolutionSprint = sprint;
 				model.summary = issue.getSummary();
-				Employee employee = Employee.find.where().eq("jiraID", resolver).findUnique();
+				Employee employee = Employee.find.where().eq("jiraID", resolver).eq("scrumMaster", scrumMaster).findUnique();
 				if (employee != null) {
 					model.resolver = employee;
 				}
