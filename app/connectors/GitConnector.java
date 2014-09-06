@@ -54,9 +54,9 @@ public class GitConnector extends Connector {
 			Iterable<RevCommit> revCommits = logCommand.all().call();
 
 			List<Sprint> activeSprints = Sprint.find.where().eq("scrumMaster", scrumMaster).eq("locked", false).findList();
-			long sprintLength = scrumMaster.sprintLengthInDays * 24 * 60 * 60 * 1000;
 			for (RevCommit revCommit : revCommits) {
 				for (Sprint sprint : activeSprints) {
+					long sprintLength = sprint.getSprintLengthInDays() * 24 * 60 * 60 * 1000;
 					long sprintStart = sprint.startDate.getTime();
 					long commitTime = ((long) revCommit.getCommitTime()) * 1000;
 

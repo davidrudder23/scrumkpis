@@ -161,7 +161,12 @@ public class SprintController extends ParentController {
 			Logger.debug("Can't parse date", e);
 		}
 		sprint.scrumMaster = scrumMaster;
-		
+		try {
+			sprint.lengthInDays = Integer.parseInt(getFormValue("length-in-days"));
+		} catch (NumberFormatException nfExc) {
+			sprint.lengthInDays = -1;
+		}
+
 		sprint.save();
 		
 		if (newSprint) {

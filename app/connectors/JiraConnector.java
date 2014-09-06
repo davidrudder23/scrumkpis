@@ -88,7 +88,7 @@ public class JiraConnector extends Connector {
 		String mungedQuery = velocityQuery.replaceAll("%s", "'"+sdf.format(sprint.startDate)+"'");
 		Calendar endDate = Calendar.getInstance();
 		endDate.setTime(sprint.startDate);
-		endDate.add(Calendar.DAY_OF_YEAR, scrumMaster.sprintLengthInDays);
+		endDate.add(Calendar.DAY_OF_YEAR, sprint.getSprintLengthInDays());
 		
 		mungedQuery = mungedQuery.replaceAll("%e", "'"+sdf.format(endDate.getTime())+"'");
 		

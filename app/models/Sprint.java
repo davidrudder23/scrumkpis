@@ -34,11 +34,13 @@ public class Sprint extends Model {
 
 	public Date startDate = new Date();
 
+	public int lengthInDays = -1;
+	
 	public Boolean locked = false;
 	
 	@ManyToOne
 	public ScrumMaster scrumMaster;
-	
+
 	public List<EmployeeSprint> getEmployeeSprints() {
 		List<EmployeeSprint> employeeSprints = EmployeeSprint.find.where().eq("sprint", this).findList();
 		return employeeSprints;
@@ -114,17 +116,22 @@ public class Sprint extends Model {
 		return points;
 	}
 	
+	public int getSprintLengthInDays() {
+		if (lengthInDays<0) return scrumMaster.sprintLengthInDays;
+		return lengthInDays;
+	}
+	
 	public Date getEndDate() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(startDate);
-		calendar.add(Calendar.DAY_OF_YEAR, scrumMaster.sprintLengthInDays);
+		calendar.add(Calendar.DAY_OF_YEAR, getSprintLengthInDays());
 		return calendar.getTime();
 	}
 	
 	public String getFormattedEndDate() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(startDate);
-		calendar.add(Calendar.DAY_OF_YEAR, scrumMaster.sprintLengthInDays);
+		calendar.add(Calendar.DAY_OF_YEAR, getSprintLengthInDays());
 		return dateFormatter.format(calendar.getTime());
 	}
 	
