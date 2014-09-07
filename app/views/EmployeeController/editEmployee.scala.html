@@ -104,6 +104,19 @@
 }
 
 <div>
+<h3>Sprint Stories</h3>
+	@for(employeeSprint <- employeeSprints) {
+		<h4>Sprint @employeeSprint.sprint.name - @employeeSprint.storyPointsCompleted / @employeeSprint.storyPointsAvailable</h4>
+		@for(issue <- employeeSprint.getResolvedJiraIssues()) {
+			<div style="margin-bottom: 10px; border: outset thin; background-color: #eee">
+				<div style="float: left; width: 30%">
+				<a href="@routes.JiraController.issue(issue.jiraKey)">@issue.jiraKey</a>
+				</div>
+				<div style="float: right; width: 70%">@issue.summary</div>
+				<div style="clear: both;"></div>
+			</div>
+		}
+	}
 <h3>Git Commits</h3>
 	@for(gitCommit <- gitCommits) {
 		<div style="margin-bottom: 10px; border: outset thin; background-color: #eee">

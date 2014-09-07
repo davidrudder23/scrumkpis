@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -29,6 +31,11 @@ public class EmployeeSprint extends Model {
 	public float storyPointsCompleted;
 	
 	public int numReopens;
+	
+	public List<JiraIssue> getResolvedJiraIssues() {
+		List<JiraIssue> issues = JiraIssue.find.where().eq("scrumMaster", employee.scrumMaster).eq("resolver", employee).eq("resolutionSprint", sprint).findList();
+		return issues;
+	}
 	
 	public static Finder<Long, EmployeeSprint> find = new Finder<Long, EmployeeSprint>(Long.class, EmployeeSprint.class);
 }
